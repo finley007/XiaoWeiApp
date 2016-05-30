@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/xiaowei.min.css" rel="stylesheet" />
+		<link href="css/webpos.css" rel="stylesheet" />
+		<style>
+			.mui-table-cell {
+				display:inline-table;
+				height: 30px;
+				line-height: 30px
+			}
+			
+			.mui-bar-tab ~ .mui-content {
+				padding-bottom: 0
+			}
+			
+			.mui-table-view {
+				width: 100%;
+				font-size: 16px;
+			}
+			
+			.mui-table-view-cell::after {
+				left: 0
+			}
+			
+			.mui-bar-tab {
+				margin: 0 auto;
+				width: 100%
+			}
+			
+			.mui-bar-tab div {
+				text-align: center;
+			}
+			
+			.mui-content {
+				height: 100%;
+			}
+			
+			.mui-table-view-cell.h5 {
+				margin-top: 10px;
+				padding-right: 0
+			}
+			
+			.item {
+				color: inherit;
+				font-family: inherit;
+				font-weight: 550;
+				font-size: 18px;
+				color: #000000;
+				display: inline;
+				padding-left: 10px
+			}
+			
+			.item span.highlight {
+				color: #E12C30;
+				font-weight: 800
+			}
+			
+			.second-col {
+				padding-right: 30px;
+				float: right
+			}
+			
+			.table-first-col {
+				width:60%
+			}
+			
+			.table-second-col {
+				width: 70px
+			} 
+			
+			.table-third-col-header {
+				width: 50px;
+				padding-left: 10px
+			}
+			
+			.table-third-col {
+				width: 50px;
+				padding-left: 20px
+			}
+			
+			.table-head {
+				font-weight: 800
+			}
+			
+			h5, .h5 {
+			    margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">已点菜单</span></h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab app-footer">
+			<div><input type="submit" value="加菜" id="add-dish"/></div>
+		</nav>
+		<div class="mui-content">
+			<div class="mui-content-padded h5">
+				<div class="item">桌号: 25</div>
+				<div class="item second-col">人数: 3人</div>
+			</div>
+			<ul class="mui-table-view" id="dish-list-container">
+				<li class="mui-table-view-cell table-head">
+					<div class="mui-slider-handle">
+						<div class="mui-table-cell table-first-col">
+							菜品
+						</div>
+						<div class="mui-table-cell table-second-col">
+							单价
+						</div>
+						<div class="mui-table-cell table-third-col-header">
+							数量
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="mui-table-view-cell h5">
+				<div class="item second-col">总计: <span class="highlight" id="total-price"></span> 元</div>
+				<div class="item second-col">共 <span id="total-count"></span> 道菜</div> 
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/dish.js"></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				$.plusReady(function() {
+					var settingPage = $.preload({
+						"id": 'setting',
+						"url": 'setting.html'
+					});
+					
+					var menuPage = $.preload({
+						"id": 'menu',
+						"url": 'menu.html'
+					});
+//					//设置
+//					var settingButton = doc.getElementById('setting');
+//					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
+//					settingButton.addEventListener('tap', function(event) {
+//						$.openWindow({
+//							id: 'setting',
+//							show: {
+//								aniShow: 'pop-in'
+//							},
+//							styles: {
+//								popGesture: 'hide'
+//							},
+//							waiting: {
+//								autoShow: false
+//							}
+//						});
+//					});
+					var addDishButton = doc.getElementById('add-dish');
+					addDishButton.addEventListener('tap', function(event) {
+						$.openWindow({
+							id: 'menu',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					});
+				});
+			}(mui, document));
+			
+			var dishInfo = '{"statInfo": {"totalCount": "3", "totalPrice": "1120.3"}, "detailInfo": [{"name": "超级无敌海景佛跳墙", "price": "1100.00","count": "1"}, {"name": "黄焖鸡", "price": "11.20","count": "1"}, {"name": "猪扒饭", "price": "256.6","count": "1"}]}';
+			var result = dish.creatDishList(dishInfo);
+			if (result.content != "") {
+				$("#dish-list-container").append(result.content);
+			}
+			$("#total-price").text(result.price);
+			$("#total-count").text(result.count);
+			
+			//退菜
+			function cancelDish(dish) {
+				alert("退菜" + dish);
+			}
+				
+			//催菜
+			function urgeDish(dish) {
+				alert("催菜" + dish);
+			}
+		</script>
+	</body>
+
+</html>

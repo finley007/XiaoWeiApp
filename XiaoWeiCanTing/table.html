@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/xiaowei.min.css" rel="stylesheet" />
+		<link href="css/webpos.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94
+			}
+			
+			.mui-btn {
+				padding: 0;
+				width: 25%;
+				float: left;
+				height: 45px;
+				border-radius: 3px
+			}
+			
+			.mui-bar-tab ~ .mui-content {
+				padding-bottom: 0
+			}
+			
+			.mui-icon-search {
+				background-color: #393A3F;
+				border: 1px solid #393A3F
+			}
+			
+			.mui-popover {
+				border-radius: 5px;
+				width: 150px;
+				box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.45)
+			}
+			
+			.mui-table-view-cell:hover {
+				background-color: #ECECED
+			}
+			
+			.xw-search-input {
+				width: 50%;
+				padding: 0;
+				height: 45px;
+			}
+			
+			.xw-search-input > input {
+				width: 70%;
+				height: 100%;
+				margin: 0;
+				border: none;
+				font-size: 16px;
+				padding-left: 5px;
+			}
+			
+			.xw-search-input > button {
+				height: 100%;
+				float: right;
+			}
+			
+			.xw-select {
+				margin: 0;
+				font-size: 16px;
+				height: 100%;
+				width: 100%;
+				padding: 5px;
+			}
+			
+			.search-bar {
+				position: fixed;
+				display: block;
+				z-index: 10;
+			}
+			
+			.main-section {
+				position: fixed;
+				top: 90px;
+				bottom: 52px;
+				overflow: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">堂点</span></h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab app-footer">
+			<a class="mui-tab-item" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">设置</span>
+			</a>
+		</nav>
+		<div class="mui-content">
+			<div id="popover" class="mui-popover">
+				<div class="mui-popover-arrow"></div>
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell" id="cancel-popover"><a href="#">取消</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="search-bar">
+				<div class="mui-btn">
+					<select class="xw-select" id="area-selector"></select>
+				</div>
+				<div class="mui-btn">
+					<select class="xw-select" id="status-selector"></select>
+				</div>
+				<div class="mui-btn xw-search-input">
+					<input type="text" class="mui-btn mui-input-clear" placeholder="请输入桌号" id="table-no-search">
+					<button type="button" class="mui-btn mui-btn-primary mui-icon mui-icon-search" id="table-no-search-bt"></button>
+				</div>
+			</div>
+			<div class="main-section">
+			</div>
+			<script src="js/mui.min.js"></script>
+			<script src="js/app.js"></script>
+			<script src="js/jquery-2.2.3.min.js"></script> 
+			<script src="js/table.js"></script>
+			<script>
+				(function($, doc) {
+					$.init();
+					$.plusReady(function() {
+						var settingPage = $.preload({
+							"id": 'setting',
+							"url": 'setting.html'
+						});
+						var dishPage = $.preload({
+							"id": 'dish',
+							"url": 'dish.html'
+						});
+						//设置
+						var settingButton = doc.getElementById('setting');
+						//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
+						settingButton.addEventListener('tap', function(event) {
+							$.openWindow({
+								id: 'setting',
+								show: {
+									aniShow: 'pop-in'
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
+						});
+						
+						$.oldBack = mui.back;
+						var backButtonPress = 0;
+						$.back = function(event) {
+							backButtonPress++;
+							if (backButtonPress > 1) {
+								plus.runtime.quit();
+							} else {
+								plus.nativeUI.toast('再按一次退出应用');
+							}
+							setTimeout(function() {
+								backButtonPress = 0;
+							}, 1000);
+							return false;
+						};
+					});
+				}(mui, document));
+
+				var tableInfo = '{"tables": [{"id": "1","status": "idle","number": "1","price": "11.2","area": "1","people": "4"},{"id": "2","status": "idle","number": "2","price": "11.2","area": "1","people": "4"},{"id": "3","status": "ordered","number": "3","price": "11.2","area": "1","people": "4"},{"id": "4","status": "ordered","number": "4","price": "11.2","area": "2","people": "10"},{"id": "5","status": "","number": "5","price": "11.2","area": "3","people": "10"},{"id": "6","status": "","number": "6","price": "11.2","area": "4","people": "10"}]}';
+				table.addTables($(".main-section"), tableInfo, openMenu);
+				
+				table.initSelection($("#area-selector"), table.areaInfo);
+				table.initSelection($("#status-selector"), table.statusInfo);
+				
+				var cancelPopover = document.getElementById('cancel-popover');
+				cancelPopover.addEventListener('tap', closeMenu);
+				
+				var statusSelector = document.getElementById('status-selector');
+				statusSelector.addEventListener('change', function() {
+					var status = $("#status-selector").val();
+					var area = $("#area-selector").val();
+					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), openMenu);
+				});
+				var areaSelector = document.getElementById('area-selector');
+				areaSelector.addEventListener('change', function() {
+					var status = $("#status-selector").val();
+					var area = $("#area-selector").val();
+					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), openMenu);
+				});
+				
+				var tableNoSearchBt = document.getElementById('table-no-search-bt');
+				tableNoSearchBt.addEventListener('tap', filterTableByNo);
+				
+				function filterTableByNo() {
+					var no = $('#table-no-search').val();
+					table.addTables($(".main-section"), table.filterTableByNo(tableInfo, no), openMenu);
+				}
+				
+				function openMenu() {
+					var top = $(this).offset().top;
+					var left = $(this).offset().left;
+					$(".operation").remove();
+					var menuInfo = table.getMenuContent($(this).attr("status"), $(this).attr("id"));
+					$(menuInfo.content).insertBefore('#cancel-popover');
+					$("#popover").css({position: "absolute", top: top + 60, left: left, height: (menuInfo.count + 1) * 45});
+					mui('#popover').popover('show');
+				}
+				
+				function closeMenu() {
+					mui('#popover').popover('hide');
+				}
+				
+				//开台
+				function openTable(number) {
+					alert("开台" + number);
+				}
+				
+				//清台
+				function clearTable(number) {
+					alert("清台" + number);
+				}
+				
+				//点菜
+				function orderDish(number) {
+					mui.openWindow({
+						id: 'dish',
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				}
+				
+				//并台
+				function combineTable(number) {
+					mui.openWindow({
+					    url: 'table_select.html',
+					    id: 'table_select',
+					    extras:	{
+							status : "ordered"
+					    }
+					});
+				}
+				
+				//换台
+				function changeTable(number) {
+					mui.openWindow({
+					    url: 'table_select.html',
+					    id: 'table_select',
+					    extras:{
+					      status : "idle"
+					    }
+					});
+				}
+				
+				//菜品调整
+				function modifyDish(number) {
+					mui.openWindow({
+						id: 'dish',
+						show: {
+							aniShow: 'pop-in'
+						},
+						styles: {
+							popGesture: 'hide'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				}
+			</script>
+	</body>
+
+</html>

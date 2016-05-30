@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/xiaowei.min.css">
+		<style>
+			#selected-dish {
+				height: 300px;
+				width: 100%;
+				position: absolute;
+				background-color: #FFFFFF;
+				top: 0;
+				z-index: 999
+			}
+			
+			#selected-dish-board {
+				height: 300px;
+				overflow-y: auto
+			}
+			
+			#dish-info {
+			     text-align: center;
+			     background-color: #FFFFFF;
+			     width: 92% !important;
+			     margin-left: 4%;
+			     margin-top: 5%;
+			     padding: 0 0 10px 0 !important;
+			     position: absolute;
+			     z-index: 999
+			}
+			
+			#dish-info li {
+				width: 100% !important;
+				margin-right: 0 !important;
+				padding: 10px 14px 0 14px !important
+			}
+			
+			#dish-info img {
+				width: 100%
+			}
+			
+			.mui-row.mui-fullscreen>[class*="mui-col-"] {
+				height: 100%;
+				padding-bottom: 40px
+			}
+			
+			.mui-col-xs-3,
+			.mui-control-content {
+				overflow-y: auto;
+				height: 100%;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				line-height: 50px;
+				width: 100%;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				background-color: #fff;
+			}
+			
+			.mui-numbox {
+				float: right;
+				width: 120px;
+				height: 30px;
+				padding-left: 21px;
+				padding-right: 70px;
+				border: transparent;
+				background-color: transparent
+			}
+			
+			.mui-table-view-cell {
+				line-height: 30px;
+				font-size: 14px;
+				padding-right: 5px
+			}
+			
+			.mui-numbox [class*="btn-numbox"],
+			.mui-numbox [class*="numbox-btn"] {
+				width: 20px
+			}
+			
+			.mui-numbox .mui-btn-numbox-minus {
+				display: none;
+			}
+			
+			.mui-numbox .mui-input-numbox {
+				display: none;
+			}
+			
+			.mui-numbox .mui-btn-numbox-plus {
+				border: 1px solid #bbb;
+				border-radius: 3
+			}
+			
+			.mui-input-numbox {
+				font-size: 15px;
+			}
+			
+			.mui-search input[type="search"] {
+				margin-bottom: 1px;
+				height: 38px
+			}
+			
+			.mui-search::before {
+				margin-top: -12px;
+			}
+			
+			.price-bt {
+				width: 70px !important;
+				font-size: 14px !important;
+			}
+			
+			.category-title {
+				background-color: #EFEFF4;
+				line-height: 20px !important;
+				height: 40px
+			}
+			
+			.category-title::after {
+				left: 0
+			}
+			
+			.last-child::after {
+				left: 0
+			}
+			
+			.add-dish {
+				float: right;
+				margin-right: 10px
+			}
+			
+			.summary {
+				display: inline;
+				top: 10px;
+				left: 12px;
+				position: relative
+			}
+			
+			.menu-wrapper.hidden {
+				-webkit-transform: translate3d(0, -100%, 0);
+				transform: translate3d(0, -100%, 0);
+				z-index: -1;
+			}
+			
+			#dish-info.hidden {
+				z-index: -1;
+			}
+			
+			.menu-backdrop {
+				display: none;
+			}
+			
+			.menu-open {
+				height: 100%;
+				width: 100%;
+			}
+			
+			.menu-open .menu-backdrop {
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				height: 100%;
+				width: 100%;
+				display: block;
+				z-index: 998;
+				background-color: #101010;
+			}
+			
+			.animated {
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			
+			@-webkit-keyframes fadeOutUp {
+				20% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				40%,
+				45% {
+					opacity: 1;
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				100% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, -100%, 0);
+					transform: translate3d(0, -100%, 0);
+				}
+			}
+			
+			@keyframes fadeOutUp {
+				20% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				40%,
+				45% {
+					opacity: 1;
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				100% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, -100%, 0);
+					transform: translate3d(0, -100%, 0);
+				}
+			}
+			
+			.fade-out-up {
+				-webkit-animation-name: fadeOutUp;
+				animation-name: fadeOutUp;
+			}
+			
+			@-webkit-keyframes fadeInDown {
+				0%,
+				60%,
+				75%,
+				90%,
+				100% {
+					-webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+					transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+				}
+				0% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, -100%, 0);
+					transform: translate3d(0, -100%, 0);
+				}
+				60% {
+					opacity: 1;
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				75% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				90% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				100% {
+					-webkit-transform: none;
+					transform: none;
+				}
+			}
+			
+			@keyframes fadeInDown {
+				0%,
+				60%,
+				75%,
+				90%,
+				100% {
+					-webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+					transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+				}
+				0% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, -100%, 0);
+					transform: translate3d(0, -100%, 0);
+				}
+				60% {
+					opacity: 1;
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				75% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				90% {
+					-webkit-transform: translate3d(0, 0px, 0);
+					transform: translate3d(0, 0px, 0);
+				}
+				100% {
+					-webkit-transform: none;
+					transform: none;
+				}
+			}
+			
+			.fade-in-down {
+				-webkit-animation-name: fadeInDown;
+				animation-name: fadeInDown
+			}
+			
+			.mui-media-body {
+				padding-top: 5px;
+				padding-bottom: 10px;
+				vertical-align: middle;
+				text-align: left;
+				font-weight: bold;
+				height: 50px;
+			}
+			
+			.dish-instruction {
+				text-align: left
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">点菜</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab app-footer">
+			<div class="footer-bar">
+				<div class="summary"><span id="total">0</span>&nbsp;|&nbsp;<span id="total-price">0.00</span>￥</div>
+				<input type="submit" value="下单" class="add-dish" id="add-dish" style="float: right;" />
+			</div>
+		</nav>
+		<div class="mui-content mui-row mui-fullscreen">
+			<div class="mui-input-row mui-search">
+				<input type="search" class="mui-input-clear" placeholder="搜索您需要的菜品">
+			</div>
+			<div class="mui-col-xs-3">
+				<div id="segmented-controls" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+				</div>
+			</div>
+			<div id="segmentedControlContents" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;">
+				<div id="content-panel" class="mui-control-content mui-active">
+					<ul class="mui-table-view" id="dish-list">
+					</ul>
+				</div>
+			</div>
+			<div id="selected-dish" class="menu-wrapper hidden">
+				<ul class="mui-table-view" id="selected-dish-board">
+				</ul>
+			</div>
+			<ul class="mui-table-view mui-grid-view hidden" id="dish-info">
+			</ul>
+		</div>
+		<div id="menu-backdrop" class="menu-backdrop"></div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/menu.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var menuList = '{"menu": [{"name": "category1", "label": "凉菜", "dishList": [{"id": "dish1", "label": "粉皮", "price": "10.50"}, {"id": "dish2", "label": "芥末三丝", "price": "5.00"}, {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"}]}, {"name": "category2", "label": "热菜", "dishList": [{"id": "dish4", "label": "红烧肉", "price": "25.00"}, {"id": "dish5", "label": "水煮鱼", "price": "54.00"}, {"id": "dish6", "label": "小炒肉", "price": "24.00"}, {"id": "dish7", "label": "素三鲜", "price": "16.00"}, {"id": "dish8", "label": "土豆丝", "price": "10.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}]}, {"name": "category3", "label": "甜点", "dishList": [{"id": "dish10", "label": "榴莲酥", "price": "20.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}]}]}';
+			menu.createMenu(menuList);
+			$(document).ready(function() {
+				$(".mui-input-clear").on('input', function() {
+					menu.createMenu(menu.filterMenu(menuList, $(this).val()));
+				});
+				$(".summary").click(function() {
+					if ($("#total").text() > 0) {
+						toggleMenu();
+					} else {
+						mui.alert('请选择菜品');
+					}
+				})
+			});
+			document.getElementById("add-dish").addEventListener('tap', function() {
+				var total = 0;
+				$(".mui-input-numbox").each(function() {
+					total += parseInt($(this).val());
+				})
+				if (total > 0) {
+					var btnArray = ['否', '是'];
+					mui.confirm(
+						//menu.createConfirmContent(),
+						"",
+						'确认下单?', btnArray,
+						function(e) {
+							if (e.index == 1) {} else {}
+						})
+				} else {
+					mui.alert('请至少选择一个菜品');
+				}
+			});
+			var selectedDish = document.getElementById("selected-dish");
+			var backdrop = document.getElementById("menu-backdrop");
+			backdrop.addEventListener('tap', backDropControl);
+			function backDropControl() {
+				if (menuOpenned) {
+					toggleMenu();
+				} else if (infoOpenned) {
+					toggleInfo();
+				}
+			}
+			var selectedDishClassList = selectedDish.classList;
+			var busying = false;
+			var menuOpenned = false;
+			function toggleMenu() {
+				menu.createSelectedDishesBoard();
+				mui.ready(function() {
+					mui('.mui-numbox').numbox();
+				})
+				if (busying) {
+					return;
+				}
+				busying = true;
+				if (selectedDishClassList.contains('mui-active')) {
+					selectedDish.className = 'menu-wrapper fade-out-up animated';
+					menuOpenned = false;
+					setTimeout(function() {
+						selectedDish.classList.add('hidden');
+						document.body.classList.remove('menu-open');
+						backdrop.style.opacity = 0;
+						menu.createMenu(menu.filterMenu(menuList, $(".mui-input-clear").val()));
+					}, 400);
+				} else {
+					document.body.classList.add('menu-open');
+					backdrop.style.opacity = 0.4;
+					selectedDish.className = 'menu-wrapper fade-in-down animated mui-active';
+					menuOpenned = true;
+				}
+				setTimeout(function() {
+					busying = false;
+				}, 400);
+			}
+			var dishInfo = document.getElementById("dish-info");
+			var dishInfoClassList = dishInfo.classList;
+			var infoOpenned = false;
+			function toggleInfo(info) {
+				if (busying) {
+					return;
+				}
+				busying = true;
+				if (dishInfoClassList.contains('hidden')) {
+					if (menu.createDishInfo(info)) {
+						mui.ready(function() {
+							mui('.mui-numbox').numbox();
+						})
+						document.body.classList.add('menu-open');
+						backdrop.style.opacity = 0.4;
+						dishInfo.className = 'menu-wrapper';
+						infoOpenned = true;
+					}
+				} else {
+					infoOpenned = false;
+					setTimeout(function() {
+						dishInfo.classList.add('hidden');
+						document.body.classList.remove('menu-open');
+						backdrop.style.opacity = 0;
+						menu.createMenu(menu.filterMenu(menuList, $(".mui-input-clear").val()));
+					}, 400);
+				}
+				setTimeout(function() {
+					busying = false;
+				}, 400);
+			}
+		</script>
+
+	</body>
+
+</html>
