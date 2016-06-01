@@ -13,20 +13,35 @@
 				color: #8f8f94;
 			}
 			
-			.mui-btn {
-				padding: 10px;
+			.mui-content > .mui-table-view:first-child {
+				margin-top: 5px;
 			}
 			
-			.mui-table-view.mui-grid-view .mui-table-view-cell {
-				background-color: #4CD964;
+			.mui-media {
+				padding: 8px !important;
 			}
 			
-			.mui-grid-view.mui-grid-9 .mui-media {
-			    color: #ffffff;
+			.main-icon {
+				float: left; 
+				background-image: url(images/icon.jpg); 
+				height: 130px; 
+				width: 130px; 
+				margin-right: 25px;
+				margin-left: 20px
 			}
 			
-			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
-				color: #ffffff;
+			.function-item {
+				padding-top: 20px;
+			}
+			
+			.function-title {
+				font-size: 24px;
+				padding-bottom: 10px
+			}
+			
+			.mui-col-sm-4 {
+				padding-top: 15px !important;
+				padding-bottom: 15px !important;
 			}
 		</style>
 	</head>
@@ -46,17 +61,114 @@
 			</a>
 		</nav>
 		<div class="mui-content">
-		        <ul class="mui-table-view mui-grid-view mui-grid-9">
-		            <li id="table" class="mui-table-view-cell mui-media mui-col-xs-6"><a href="#">
-		                    <span class="mui-icon mui-icon-home"></span>
-		                    <div class="mui-media-body">堂点</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-6"><a href="#">
-		                    <span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
-		                    <div class="mui-media-body">预约</div></a></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-6"><a href="#">
-		                    <span class="mui-icon mui-icon-chatbubble"></span>
-		                    <div class="mui-media-body">排号</div></a></li>
-		        </ul> 
+		        <ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right">
+						<div class="main-icon" style="background-position: -6px -45px;"></div>
+						<div class="mui-media-body function-item">
+							<p class="function-title">堂点</p>
+							<p class='mui-ellipsis'>查看全部桌台的状态和信息</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class='mui-navigate-right' href="javascript:;">
+						<div class="main-icon" style="background-position: -158px -45px;"></div>
+						<div class="mui-media-body function-item">
+							<p class="function-title">快速点餐</p>
+							<p class='mui-ellipsis'>快速点餐，更方便，更快捷</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div id="Gallery" class="mui-slider" style="padding-top: 5px; height: 280px;">
+				<div class="mui-slider-group">
+					<div class="mui-slider-item">
+						<ul class="mui-table-view mui-grid-view mui-grid-9">
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-home"></span>
+									<div class="mui-media-body">开台</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
+									<div class="mui-media-body">拼台</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-chatbubble"></span>
+									<div class="mui-media-body">换台</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-location"></span>
+									<div class="mui-media-body">催菜</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-search"></span>
+									<div class="mui-media-body">退菜</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-phone"></span>
+									<div class="mui-media-body">划菜</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="mui-slider-item">
+						<ul class="mui-table-view mui-grid-view mui-grid-9">
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-home"></span>
+									<div class="mui-media-body">Home</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
+									<div class="mui-media-body">Email</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-chatbubble"></span>
+									<div class="mui-media-body">Chat</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-location"></span>
+									<div class="mui-media-body">location</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-search"></span>
+									<div class="mui-media-body">Search</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<a href="#">
+									<span class="mui-icon mui-icon-phone"></span>
+									<div class="mui-media-body">Phone</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/app.js"></script>
