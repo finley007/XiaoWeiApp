@@ -10,38 +10,42 @@
 		<style>
 			ul {
 				font-size: 14px;
-				color: #8f8f94;
+				color: #8f8f94
 			}
 			
 			.mui-content > .mui-table-view:first-child {
-				margin-top: 5px;
+				margin-top: 2px;
 			}
 			
 			.mui-media {
 				padding: 8px !important;
+				background-color: #FFFFFF !important
 			}
 			
 			.main-icon {
-				float: left; 
-				background-image: url(images/icon.jpg); 
-				height: 130px; 
-				width: 130px; 
-				margin-right: 25px;
-				margin-left: 20px
+				float: left;
+				background-image: url(images/icon.jpg);
+				background-size: 30em;
+				height: 100px;
+				width: 100px;
+				margin: 12px 30px 0 25px
 			}
 			
 			.function-item {
-				padding-top: 20px;
+				padding-top: 30px;
+				height: 120px;
 			}
 			
 			.function-title {
-				font-size: 24px;
+				font-size: 20px;
 				padding-bottom: 10px
 			}
 			
-			.mui-col-sm-4 {
-				padding-top: 15px !important;
-				padding-bottom: 15px !important;
+			.main-button {
+				width: 50px;
+				height: 50px;
+				background-image: url(images/button.jpg);
+				background-size: 5em;
 			}
 		</style>
 	</head>
@@ -61,10 +65,10 @@
 			</a>
 		</nav>
 		<div class="mui-content">
-		        <ul class="mui-table-view mui-table-view-chevron">
-				<li class="mui-table-view-cell mui-media">
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media" id="table-view-item">
 					<a class="mui-navigate-right">
-						<div class="main-icon" style="background-position: -6px -45px;"></div>
+						<div class="main-icon" style="background-position: 0px -30px;"></div>
 						<div class="mui-media-body function-item">
 							<p class="function-title">堂点</p>
 							<p class='mui-ellipsis'>查看全部桌台的状态和信息</p>
@@ -73,7 +77,7 @@
 				</li>
 				<li class="mui-table-view-cell mui-media">
 					<a class='mui-navigate-right' href="javascript:;">
-						<div class="main-icon" style="background-position: -158px -45px;"></div>
+						<div class="main-icon" style="background-position: -110px -30px;"></div>
 						<div class="mui-media-body function-item">
 							<p class="function-title">快速点餐</p>
 							<p class='mui-ellipsis'>快速点餐，更方便，更快捷</p>
@@ -81,43 +85,43 @@
 					</a>
 				</li>
 			</ul>
-			<div id="Gallery" class="mui-slider" style="padding-top: 5px; height: 280px;">
+			<div id="Gallery" class="mui-slider" style="height: 260px;">
 				<div class="mui-slider-group">
 					<div class="mui-slider-item">
 						<ul class="mui-table-view mui-grid-view mui-grid-9">
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-home"></span>
+									<span class="mui-icon main-button" style="background-position: -52px -50px;"></span>
 									<div class="mui-media-body">开台</div>
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
+									<span class="mui-icon main-button" style="background-position: -104px 0px;"><!--span class="mui-badge">5</span--></span>
 									<div class="mui-media-body">拼台</div>
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-chatbubble"></span>
+									<span class="mui-icon main-button" style="background-position: -154px 0px;"></span>
 									<div class="mui-media-body">换台</div>
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-location"></span>
+									<span class="mui-icon main-button" style="background-position: 0px -104px;"></span>
 									<div class="mui-media-body">催菜</div>
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-search"></span>
+									<span class="mui-icon main-button"></span>
 									<div class="mui-media-body">退菜</div>
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-phone"></span>
+									<span class="mui-icon main-button" style="background-position: -50px 0px;"></span>
 									<div class="mui-media-body">划菜</div>
 								</a>
 							</li>
@@ -127,38 +131,8 @@
 						<ul class="mui-table-view mui-grid-view mui-grid-9">
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
 								<a href="#">
-									<span class="mui-icon mui-icon-home"></span>
-									<div class="mui-media-body">Home</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>
-									<div class="mui-media-body">Email</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-chatbubble"></span>
-									<div class="mui-media-body">Chat</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-location"></span>
-									<div class="mui-media-body">location</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-search"></span>
-									<div class="mui-media-body">Search</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-phone"></span>
-									<div class="mui-media-body">Phone</div>
+									<span class="mui-icon mui-icon-more"></span>
+									<div class="mui-media-body">更多</div>
 								</a>
 							</li>
 						</ul>
@@ -175,22 +149,22 @@
 		<script>
 			(function($, doc) {
 				$.init();
+				//获取当前登录账户
 				var settings = app.getSettings();
 				var account = doc.getElementById('account');
-				//
 				window.addEventListener('show', function() {
 					var state = app.getState();
 					account.innerText = state.account;
 				}, false);
+				
 				$.plusReady(function() {
 					var settingPage = $.preload({
 						"id": 'table',
 						"url": 'table.html'
 					});
-					//设置
-					var orderIcon = doc.getElementById('table');
+					var tableViewItem = doc.getElementById('table-view-item');
 					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
-					orderIcon.addEventListener('tap', function(event) {
+					tableViewItem.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'table',
 							show: {
@@ -200,10 +174,11 @@
 								popGesture: 'hide'
 							},
 							waiting: {
-								autoShow: false
+								autoShow: true
 							}
 						});
 					});
+					
 					//--
 					$.oldBack = mui.back;
 					var backButtonPress = 0;
