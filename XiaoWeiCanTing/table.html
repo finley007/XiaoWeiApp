@@ -126,6 +126,11 @@
 							"id": 'dish',
 							"url": 'dish.html'
 						});
+						
+						var tableSelectPage = $.preload({
+							"id": 'table_select',
+							"url": 'table_select.html'
+						});
 					});
 				}(mui, document));
 				
@@ -141,6 +146,7 @@
 					var status = $("#status-selector").val();
 					var area = $("#area-selector").val();
 					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), openMenu);
+					$("#table-no-search").val("");
 				});
 				
 				//根据区域过滤
@@ -149,32 +155,62 @@
 					var status = $("#status-selector").val();
 					var area = $("#area-selector").val();
 					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), openMenu);
+					$("#table-no-search").val("");
 				});
 				
 				//桌号过滤
 				var tableNoSearch = document.getElementById('table-no-search');
-				tableNoSearch.addEventListener('input', filterTableByNo);
+				tableNoSearch.addEventListener('input', tableNoChanged);
+				var tbNoClearBinded = false;
+				function tableNoChanged() {
+					//为清空按钮增加监听事件
+					if(!tbNoClearBinded){ 
+						$('.mui-icon-clear').bind("tap", function(){
+							filterTableByNo();
+						})
+						tbNoClearBinded = true;
+					} 
+					$("#table-no-search").blur();
+					filterTableByNo();
+				}
 				function filterTableByNo() {
-					$('.mui-icon-clear').click(function() {
-						alert("aa");
-					});
 					var no = $('#table-no-search').val();
 					table.addTables($(".main-section"), table.filterTableByNo(tableInfo, no), openMenu);
+					//Clear area and status
+					$("#area-selector").val("");
+					$("#status-selector").val("");
 				}
 
 				//打开菜单
 				function openMenu() {
 					var top = $(this).offset().top;
 					var left = $(this).offset().left;
+					var width = parseInt($("#popover").width());
+					var winWidth = parseInt($(window).width());
 					$(".operation").remove();
 					var menuInfo = table.getMenuContent($(this).attr("status"), $(this).attr("id"));
 					$(menuInfo.content).insertBefore('#cancel-popover');
-					$("#popover").css({
-						position: "absolute",
-						top: top + 60,
-						left: left,
-						height: (menuInfo.count + 1) * 45
-					});
+					if (left + width > winWidth) {
+						$(".mui-popover-arrow").css({
+							left: 40
+						});
+						$("#popover").css({
+							position: "absolute",
+							top: top + 60,
+							left: winWidth - width,
+							height: (menuInfo.count + 1) * 45
+						});
+					} else {
+						$(".mui-popover-arrow").css({
+							left: 0
+						});
+						$("#popover").css({
+							position: "absolute",
+							top: top + 60,
+							left: left,
+							height: (menuInfo.count + 1) * 45
+						});
+					}
 					mui('#popover').popover('show');
 				}
 				
@@ -191,60 +227,95 @@
 				//开台
 				function openTable(number) {
 					alert("开台" + number);
+					closeMenu();
 				}
+				
 				//清台
 				function clearTable(number) {
 					alert("清台" + number);
+					closeMenu();
 				}
+				
 				//点菜
 				function orderDish(number) {
-					mui.openWindow({
-						id: 'dish',
-						show: {
-							aniShow: 'pop-in'
-						},
-						styles: {
-							popGesture: 'hide'
-						},
-						waiting: {
-							autoShow: false
-						}
-					});
+					closeMenu();
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'dish',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, 400);
 				}
+				
 				//并台
 				function combineTable(number) {
-					mui.openWindow({
-						url: 'table_select.html',
-						id: 'table_select',
-						extras: {
-							status: "ordered"
-						}
-					});
+					closeMenu();
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'table_select',
+							extras: {
+								status: "ordered"
+							},
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, 400);
 				}
+				
 				//换台
 				function changeTable(number) {
-					mui.openWindow({
-						url: 'table_select.html',
-						id: 'table_select',
-						extras: {
-							status: "idle"
-						}
-					});
+					closeMenu();
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'table_select',
+							extras: {
+								status: "idle"
+							},
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, 400);
 				}
+				
 				//菜品调整
 				function modifyDish(number) {
-					mui.openWindow({
-						id: 'dish',
-						show: {
-							aniShow: 'pop-in'
-						},
-						styles: {
-							popGesture: 'hide'
-						},
-						waiting: {
-							autoShow: false
-						}
-					});
+					closeMenu();
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'dish',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, 400);
 				}
 			</script>
 	</body>
