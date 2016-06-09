@@ -126,7 +126,6 @@
 							"id": 'dish',
 							"url": 'dish.html'
 						});
-						
 						var tableSelectPage = $.preload({
 							"id": 'table_select',
 							"url": 'table_select.html'
@@ -162,17 +161,19 @@
 				var tableNoSearch = document.getElementById('table-no-search');
 				tableNoSearch.addEventListener('input', tableNoChanged);
 				var tbNoClearBinded = false;
+
 				function tableNoChanged() {
 					//为清空按钮增加监听事件
-					if(!tbNoClearBinded){ 
-						$('.mui-icon-clear').bind("tap", function(){
+					if (!tbNoClearBinded) {
+						$('.mui-icon-clear').bind("tap", function() {
 							filterTableByNo();
 						})
 						tbNoClearBinded = true;
-					} 
+					}
 					$("#table-no-search").blur();
 					filterTableByNo();
 				}
+
 				function filterTableByNo() {
 					var no = $('#table-no-search').val();
 					table.addTables($(".main-section"), table.filterTableByNo(tableInfo, no), openMenu);
@@ -180,7 +181,7 @@
 					$("#area-selector").val("");
 					$("#status-selector").val("");
 				}
-
+				
 				//打开菜单
 				function openMenu() {
 					var top = $(this).offset().top;
@@ -223,19 +224,29 @@
 				//取消
 				var cancelPopover = document.getElementById('cancel-popover');
 				cancelPopover.addEventListener('tap', closeMenu);
-				
 				//开台
 				function openTable(number) {
-					alert("开台" + number);
 					closeMenu();
+					table.openTablePrompt(callOpenTableService, callOpenTableService);
 				}
-				
+				//调用开台服务
+				function callOpenTableService() {
+					table.callOpenTableService();
+				}
 				//清台
 				function clearTable(number) {
-					alert("清台" + number);
+					var btnArray = ['是', '否'];
+					mui.confirm('确定要清理' + number + '号台?', '', btnArray, function(e) {
+						if (e.index == 0) {
+							callClearTableService();
+						} 
+					})
 					closeMenu();
 				}
-				
+				//调用清台服务
+				function callClearTableService() {
+					table.callClearTableService();
+				}
 				//点菜
 				function orderDish(number) {
 					closeMenu();
@@ -254,7 +265,6 @@
 						});
 					}, 400);
 				}
-				
 				//并台
 				function combineTable(number) {
 					closeMenu();
@@ -276,7 +286,6 @@
 						});
 					}, 400);
 				}
-				
 				//换台
 				function changeTable(number) {
 					closeMenu();
@@ -298,7 +307,6 @@
 						});
 					}, 400);
 				}
-				
 				//菜品调整
 				function modifyDish(number) {
 					closeMenu();
