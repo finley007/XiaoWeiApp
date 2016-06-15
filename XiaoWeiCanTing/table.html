@@ -73,13 +73,17 @@
 				position: fixed;
 				display: block;
 				z-index: 10;
+				margin-top: 2px;
 			}
 			
 			.main-section {
 				position: fixed;
-				top: 90px;
-				bottom: 52px;
+				top: 94px;
+				bottom: 0px;
 				overflow: auto;
+				background-color: #EFEFF4;
+				width: 100%;
+				padding-top: 2px;
 			}
 		</style>
 	</head>
@@ -197,7 +201,7 @@
 						});
 						$("#popover").css({
 							position: "absolute",
-							top: top + 60,
+							top: top + 70,
 							left: winWidth - width,
 							height: (menuInfo.count + 1) * 45
 						});
@@ -207,7 +211,7 @@
 						});
 						$("#popover").css({
 							position: "absolute",
-							top: top + 60,
+							top: top + 70,
 							left: left,
 							height: (menuInfo.count + 1) * 45
 						});

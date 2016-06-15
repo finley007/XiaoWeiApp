@@ -19,6 +19,7 @@
 				height: 45px;
 				border-radius: 3px;
 				float: right;
+				margin-right: 2px;
 			}
 			
 			.mui-bar-tab ~ .mui-content {
@@ -60,13 +61,17 @@
 				line-height: 45px;
 				font-size: 16px;
 				padding-left: 10px;
+				padding-top: 3px;
 			}
 			
 			.main-section {
 				position: fixed;
-				top: 90px;
-				bottom: 52px;
+				top: 94px;
+				bottom: 0px;
 				overflow: auto;
+				background-color: #EFEFF4;
+				width: 100%;
+				padding-top: 2px;
 			}
 		</style>
 	</head>
@@ -77,7 +82,8 @@
 			<h1 class="mui-title">选择桌台</span></h1>
 		</header>
 		<div class="mui-content">
-			<div class="search-bar">请选择区域
+			<div class="search-bar">
+				<div style="display: inline-block;">请选择区域</div>
 				<div class="mui-btn">
 					<select class="xw-select" id="area-selector"></select>
 				</div>
@@ -106,7 +112,6 @@
 				var areaSelector = document.getElementById('area-selector');
 				areaSelector.addEventListener('change', function() {
 					var area = $("#area-selector").val();
-					alert(area);
 					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), selectTable);
 				});
 				
