@@ -3,6 +3,7 @@
 	//存储已点菜品
 	var selectedDishes = new Array();
 	
+	//更新已点菜品模型
 	var updateSelectedDishes = function(id, label, price, num) {
 		if (id != "" && selectedDishes != null) {
 			var updated = false;
@@ -22,7 +23,7 @@
 				selectedDishes.push({"id" : id, "label" : label, "price" : price, "num" : num});	
 			}
 		}
-		updateViewByModel();
+		updateStatisticViewByModel();
 	}
 	
 	var getSelectedDishById = function(id) {
@@ -36,7 +37,8 @@
 		}
 	}
 	
-	var updateViewByModel = function() {
+	//更新统计信息界面展示
+	var updateStatisticViewByModel = function() {
 		var selectedDishesInfo = owner.getSelectedDishesStatistics();
 		$("#total").text(selectedDishesInfo.totalNum);
 		$("#total-price").text(selectedDishesInfo.totalPrice);
@@ -63,7 +65,7 @@
 		return selectedDishes;
 	}
 	
-	//动态生成菜单文类和菜单
+	//动态生成菜单分类和菜单
 	owner.createMenu = function(info) {
 		var categoryList = new Array();
 		info = info || {}; 
@@ -80,9 +82,11 @@
 			var cateName = jsonInfo.menu[index].name;
 			categoryList.push(cateName);
 			var cateLabel = jsonInfo.menu[index].label;
+			//添加菜品目录
 			$("#segmented-controls").append('<a class="mui-control-item" href="' + cateName + '">' + cateLabel + '</a>');
 			if (jsonInfo.menu[index].dishList != null) {
 				hasContent = true;
+				//添加菜品列表
 				$("#dish-list").append('<li class="category-title mui-table-view-cell" id="' + cateName + '">' + cateLabel + '</li>');
 				for (var i in jsonInfo.menu[index].dishList) {
 					var dish = jsonInfo.menu[index].dishList[i];
@@ -107,12 +111,14 @@
 			$("#dish-list").append('<li class="category-title mui-table-view-cell">未找到您所需要的菜品</li>');
 		}
 		$("a[href= " + categoryList[0] + "]").addClass("mui-active");
+		//点击目录定位
 		$(".mui-control-item").click(function() {
 			var top = $("#" + $(this).attr("href")).offset().top - $("#" + categoryList[0]).offset().top;
 			$("#content-panel").animate({
 				scrollTop: top
 			}, 0);
 		});
+		//滚动菜品列表激活对应目录
 		$("#content-panel").scroll(function(event, delta) {
 			for (var index in categoryList) {
 				var top = $("#" + categoryList[index]).offset().top;
@@ -123,6 +129,7 @@
 				}
 			}
 		});
+		//菜品数量变化监听
 		$(".mui-input-numbox").change(function() {
 			if ($(this).val() == 0) {
 				$(this).css("display", "none");
@@ -140,15 +147,6 @@
 				$(this).parent().css("border-radius", 3);
 			}
 			updateSelectedDishes($(this).parent().attr("id"), extractDishName($(this).parent().parent().text()), $(this).next().attr("value"), $(this).val());
-//			var total = 0;
-//			var totalPrice = 0.0;
-//			$(".mui-input-numbox").each(function() {
-//				total += parseInt($(this).val());
-//				var price = parseInt($(this).val()) * parseFloat($(this).next().val());
-//				totalPrice += price;
-//			})
-//			$("#total").text(total);
-//			$("#total-price").text(totalPrice.toFixed(2));
 		});
 		$(".mui-table-view-cell").click(function(event) {
 			var info = new Object();
@@ -156,7 +154,7 @@
 			info["name"] = extractDishName($(this).text());
 			info["price"] = $(this).find("button").last().val();
 			info["num"] = $(this).find("input").first().val();
-			if (event.target.type != "button") {
+			if (event.target.type != "button" && typeof(event.target.type) != "undefined") {
 				toggleInfo(info);	
 			}
 		});
@@ -183,15 +181,6 @@
 				$(this).parent().css("border-radius", 3);
 			}
 			updateSelectedDishes($(this).parent().attr("id"), extractDishName($(this).parent().parent().text()), $(this).next().attr("value"), $(this).val());
-//			var total = 0;
-//			var totalPrice = 0.0;
-//			$(".mui-input-numbox").each(function() {
-//				total += parseInt($(this).val());
-//				var price = parseInt($(this).val()) * parseFloat($(this).next().val());
-//				totalPrice += price;
-//			})
-//			$("#total").text(total);
-//			$("#total-price").text(totalPrice.toFixed(2));
 		});
 	}
 	
@@ -258,7 +247,7 @@
 		if (info.id != undefined && info.id != "") {
 			$("#dish-info").children().remove();
 			if (info.num > 0) {
-				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="../images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0" style="background-color: rgb(239, 239, 244); border: 1px solid rgb(187, 187, 187); border-radius: 3px;"><button class="mui-btn mui-btn-numbox-minus" type="button" style="display: inline-block;">-</button><input class="mui-input-numbox" type="number" value="' + info.num + '" style="display: inline-block;"><button class="price-bt mui-btn mui-btn-numbox-plus" value="' + info.price + '" type="button" style="border: medium none transparent;">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');
+				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0" style="background-color: rgb(239, 239, 244); border: 1px solid rgb(187, 187, 187); border-radius: 3px;"><button class="mui-btn mui-btn-numbox-minus" type="button" style="display: inline-block;">-</button><input class="mui-input-numbox" type="number" value="' + info.num + '" style="display: inline-block;"><button class="price-bt mui-btn mui-btn-numbox-plus" value="' + info.price + '" type="button" style="border: medium none transparent;">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');
 			} else {
 				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input class="mui-input-numbox" type="number" /><button class="price-bt mui-btn mui-btn-numbox-plus" type="button" value="' + info.price + '">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>')	
 			}
@@ -285,5 +274,10 @@
 			return false;
 		}
 		
+	}
+	
+	//TODO 下单接口
+	owner.callOrderService = function() {
+		alert('调用下单接口');
 	}
 }(window.menu = {}));

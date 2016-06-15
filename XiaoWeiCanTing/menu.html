@@ -370,10 +370,14 @@
 					var btnArray = ['否', '是'];
 					mui.confirm(
 						//menu.createConfirmContent(),
-						"",
-						'确认下单?', btnArray,
+						'确认下单?',
+						'提示', 
+						btnArray,
 						function(e) {
-							if (e.index == 1) {} else {}
+							if (e.index == 1) {
+								//在回调函数里跳转到已点页面
+								menu.callOrderService();
+							} 
 						})
 				} else {
 					mui.alert('请至少选择一个菜品');
@@ -423,6 +427,7 @@
 			var dishInfo = document.getElementById("dish-info");
 			var dishInfoClassList = dishInfo.classList;
 			var infoOpenned = false;
+			//弹出菜品信息
 			function toggleInfo(info) {
 				if (busying) {
 					return;

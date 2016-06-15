@@ -186,4 +186,9 @@
 	owner.callClearTableService = function() {
 		alert("调用清台服务");
 	}
+	
+	//TODO 查询桌台统计信息，可通过状态，区域组合信息查询
+	owner.callTableStatQueryService = function(info) {
+		return 1;
+	}
 }(window.table = {}));

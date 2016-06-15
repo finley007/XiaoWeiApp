@@ -122,14 +122,14 @@
 				(function($, doc) {
 					$.init();
 					$.plusReady(function() {
-						var dishPage = $.preload({
-							"id": 'dish',
-							"url": 'dish.html'
-						});
-						var tableSelectPage = $.preload({
-							"id": 'table_select',
-							"url": 'table_select.html'
-						});
+//						var dishPage = $.preload({
+//							"id": 'dish',
+//							"url": 'dish.html'
+//						});
+//						var dishPage = $.preload({
+//							"id": 'menu',
+//							"url": 'menu.html'
+//						});
 					});
 				}(mui, document));
 				
@@ -238,21 +238,18 @@
 					var btnArray = ['是', '否'];
 					mui.confirm('确定要清理' + number + '号台?', '', btnArray, function(e) {
 						if (e.index == 0) {
-							callClearTableService();
+							table.callClearTableService();
 						} 
 					})
 					closeMenu();
-				}
-				//调用清台服务
-				function callClearTableService() {
-					table.callClearTableService();
 				}
 				//点菜
 				function orderDish(number) {
 					closeMenu();
 					setTimeout(function() {
 						mui.openWindow({
-							id: 'dish',
+							id: 'menu',
+							url: 'menu.html',
 							show: {
 								aniShow: 'pop-in'
 							},
@@ -260,52 +257,66 @@
 								popGesture: 'hide'
 							},
 							waiting: {
-								autoShow: false
-							}
+								autoShow: true
+							},
+							createNew: true
 						});
 					}, 400);
 				}
 				//并台
 				function combineTable(number) {
 					closeMenu();
-					setTimeout(function() {
-						mui.openWindow({
-							id: 'table_select',
-							extras: {
-								status: "ordered"
-							},
-							show: {
-								aniShow: 'pop-in'
-							},
-							styles: {
-								popGesture: 'hide'
-							},
-							waiting: {
-								autoShow: false
-							}
-						});
-					}, 400);
+					var count = table.callTableStatQueryService("ordered");
+					if (count > 0) {
+						setTimeout(function() {
+							mui.openWindow({
+								id: 'table_select',
+								url: 'table_select.html',
+								extras: {
+									status: "ordered"
+								},
+								show: {
+									aniShow: 'pop-in'
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								waiting: {
+									autoShow: true
+								}
+							});
+						}, 400);
+					} else {
+						mui.alert('没有可合并的桌台', '提示');					
+					}
 				}
 				//换台
 				function changeTable(number) {
 					closeMenu();
-					setTimeout(function() {
-						mui.openWindow({
-							id: 'table_select',
-							extras: {
-								status: "idle"
-							},
-							show: {
-								aniShow: 'pop-in'
-							},
-							styles: {
-								popGesture: 'hide'
-							},
-							waiting: {
-								autoShow: false
-							}
-						});
-					}, 400);
+					var count = table.callTableStatQueryService("ordered");
+					if (count > 0) {
+						setTimeout(function() {
+							mui.openWindow({
+								id: 'table_select',
+								url: 'table_select.html',
+								extras: {
+									status: "idle"
+								},
+								show: {
+									aniShow: 'pop-in'
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								waiting: {
+									autoShow: true
+								}
+							});
+						}, 400);
+					} else {
+						mui.alert('没有可换的桌台', '提示');
+					}
+					
 				}
 				//菜品调整
 				function modifyDish(number) {
@@ -313,6 +324,7 @@
 					setTimeout(function() {
 						mui.openWindow({
 							id: 'dish',
+							url: 'dish.html',
 							show: {
 								aniShow: 'pop-in'
 							},
@@ -320,8 +332,9 @@
 								popGesture: 'hide'
 							},
 							waiting: {
-								autoShow: false
-							}
+								autoShow: true
+							},
+							createNew: true
 						});
 					}, 400);
 				}
