@@ -102,7 +102,11 @@
 					$.plusReady(function() {
 						var self = plus.webview.currentWebview();
 						status = self.status;
-						table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, ""), selectTable);
+						if (status == "idle") {
+							table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, ""), changeTable);
+						} else if (status == "ordered") {
+							table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, ""), combineTable);
+						}
 					});
 				}(mui, document));
 				
@@ -112,13 +116,28 @@
 				var areaSelector = document.getElementById('area-selector');
 				areaSelector.addEventListener('change', function() {
 					var area = $("#area-selector").val();
-					table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), selectTable);
+					if (status == "idle") {
+						table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), changeTable);	
+					} else if (status == "ordered"){
+						table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), combineTable);
+					}
 				});
 				
-				function selectTable() {
-					var btn = ["确定", "取消"];
+				function changeTable() {
+					var btn = ["取消", "确定"];
 					  	mui.confirm('确认换到' + $(this).attr("id") +'台？', '提示', btn, function(e){
-					    if(e.index == 0){
+					    if (e.index == 0) {
+					    	table.callChangeTableService();
+					    	mui.back();
+					    }
+					  });
+				}
+				
+				function combineTable() {
+					var btn = ["取消", "确定"];
+					  	mui.confirm('确认和' + $(this).attr("id") +'台合并？', '提示', btn, function(e){
+					    if (e.index == 0) {
+					    	table.callCombineTableService();
 					    	mui.back();
 					    }
 					  });

@@ -191,4 +191,14 @@
 	owner.callTableStatQueryService = function(info) {
 		return 1;
 	}
+	
+	//TODO 调用换台服务
+	owner.callChangeTableService = function(info) {
+		alert("调用换台服务");
+	}
+	
+	//TODO 调用并台服务
+	owner.callCombineTableService = function(info) {
+		alert("调用并台服务");
+	}
 }(window.table = {}));

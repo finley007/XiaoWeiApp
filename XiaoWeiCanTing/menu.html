@@ -349,8 +349,16 @@
 			});
 			var menuList = '{"menu": [{"name": "category1", "label": "凉菜", "dishList": [{"id": "dish1", "label": "粉皮", "price": "10.50"}, {"id": "dish2", "label": "芥末三丝", "price": "5.00"}, {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"}]}, {"name": "category2", "label": "热菜", "dishList": [{"id": "dish4", "label": "红烧肉", "price": "25.00"}, {"id": "dish5", "label": "水煮鱼", "price": "54.00"}, {"id": "dish6", "label": "小炒肉", "price": "24.00"}, {"id": "dish7", "label": "素三鲜", "price": "16.00"}, {"id": "dish8", "label": "土豆丝", "price": "10.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}]}, {"name": "category3", "label": "甜点", "dishList": [{"id": "dish10", "label": "榴莲酥", "price": "20.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}]}]}';
 			menu.createMenu(menuList);
+			var searchClearBinded = false;
 			$(document).ready(function() {
 				$(".mui-input-clear").on('input', function() {
+					if (!searchClearBinded) {
+						$('.mui-icon-clear').bind("tap", function() {
+							menu.createMenu(menu.filterMenu(menuList, ""));
+							$(".mui-input-clear").blur();
+						})
+						searchClearBinded = true;
+					}
 					menu.createMenu(menu.filterMenu(menuList, $(this).val()));
 				});
 				$(".summary").click(function() {

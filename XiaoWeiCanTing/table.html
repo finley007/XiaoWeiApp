@@ -171,10 +171,10 @@
 					if (!tbNoClearBinded) {
 						$('.mui-icon-clear').bind("tap", function() {
 							filterTableByNo();
+							$("#table-no-search").blur();
 						})
 						tbNoClearBinded = true;
 					}
-					$("#table-no-search").blur();
 					filterTableByNo();
 				}
 
