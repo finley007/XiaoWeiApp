@@ -79,7 +79,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">选择桌台</span></h1>
+			<h1 class="mui-title"></span></h1>
 		</header>
 		<div class="mui-content">
 			<div class="search-bar">
@@ -97,18 +97,47 @@
 			<script>
 				var tableInfo = '{"tables": [{"id": "1","status": "idle","number": "1","price": "11.2","area": "1","people": "4"},{"id": "2","status": "idle","number": "2","price": "11.2","area": "1","people": "4"},{"id": "3","status": "ordered","number": "3","price": "11.2","area": "1","people": "4"},{"id": "4","status": "ordered","number": "4","price": "11.2","area": "2","people": "10"},{"id": "5","status": "","number": "5","price": "11.2","area": "3","people": "10"},{"id": "6","status": "","number": "6","price": "11.2","area": "4","people": "10"}]}';
 				var status;
+				var func;
 				(function($, doc) {
 					$.init();
 					$.plusReady(function() {
-						var self = plus.webview.currentWebview();
-						status = self.status;
-						if (status == "idle") {
-							table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, ""), changeTable);
-						} else if (status == "ordered") {
-							table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, ""), combineTable);
-						}
+						initPage();
 					});
 				}(mui, document));
+				
+				function initPage() {
+					var self = plus.webview.currentWebview();
+					status = self.status;
+					func = self.func;
+					//根据func 初始化页面title
+					if (func == "open") {
+						jQuery('.mui-title').text("开台");
+					} else {
+						jQuery('.mui-title').text("选择桌台");
+					}
+					//初始化桌台
+					var listener = getListener();
+					initTable(status, "", listener);
+				}
+				
+				//获取桌台点击监听事件
+				function getListener() {
+					var listener;
+					if (func == "open") {
+						listener = openTable;
+					} else {
+						if (status == "idle") {
+							listener = changeTable;
+						} else if (status == "ordered") {
+							listener = combineTable;
+						}	
+					}
+					return listener;
+				}
+				
+				function initTable(status, area, func) {
+					table.addTables(jQuery(".main-section"), table.filterTable(tableInfo, status, area), func);
+				}
 				
 				table.initSelection($("#area-selector"), table.areaInfo);
 
@@ -116,17 +145,14 @@
 				var areaSelector = document.getElementById('area-selector');
 				areaSelector.addEventListener('change', function() {
 					var area = $("#area-selector").val();
-					if (status == "idle") {
-						table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), changeTable);	
-					} else if (status == "ordered"){
-						table.addTables($(".main-section"), table.filterTable(tableInfo, status, area), combineTable);
-					}
+					var listener = getListener();
+					initTable(status, area, listener);
 				});
 				
 				function changeTable() {
 					var btn = ["取消", "确定"];
 					  	mui.confirm('确认换到' + $(this).attr("id") +'台？', '提示', btn, function(e){
-					    if (e.index == 0) {
+					    if (e.index == 1) {
 					    	table.callChangeTableService();
 					    	mui.back();
 					    }
@@ -136,11 +162,20 @@
 				function combineTable() {
 					var btn = ["取消", "确定"];
 					  	mui.confirm('确认和' + $(this).attr("id") +'台合并？', '提示', btn, function(e){
-					    if (e.index == 0) {
+					    if (e.index == 1) {
 					    	table.callCombineTableService();
 					    	mui.back();
 					    }
 					  });
+				}
+				
+				//开台
+				function openTable() {
+					table.openTablePrompt(callOpenTableService, callOpenTableService);
+				}
+				//调用开台服务
+				function callOpenTableService() {
+					table.callOpenTableService();
 				}
 			</script>
 	</body>
