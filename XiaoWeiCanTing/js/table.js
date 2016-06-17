@@ -66,7 +66,7 @@
 			var table = info.tables[index];
 			var status = table.status != "" ? table.status : "started";
 			var statusLabel = getStatusLabel(status);
-			result += '<div class="wp-table-btn ng-scope table-state ' + table.status + '" id="' + table.id + '" status="' + status + '"><div class="table-name-wrapper">' +
+			result += '<div class="wp-table-btn ng-scope table-state ' + table.status + '" id="' + table.id + '" status="' + status + '" people="' + table.people + '"><div class="table-name-wrapper">' +
 			'<div class="table-name ng-binding">' + table.number + '</div></div><div class="table-detail"><div class="table-state">' + 
 			'<span class="ng-binding">' + statusLabel + '</span><span class="from-wechat ng-hide" ng-show="table.is_from_wechat"></span></div>';
 			if (status == "started") {
@@ -109,13 +109,13 @@
 		}
 	}
 	
-	owner.getMenuContent = function(status, id) {
+	owner.getMenuContent = function(status, info) {
 		var content = "";
 		var count = 0;
 		if (menuConfig[status]) {
 			var menu = menuConfig[status];
 			for (var index in menu) {
-				content += '<li class="mui-table-view-cell operation" onclick="' + menu[index].func + '(' + id + ')"><a href="#">' + menu[index].label + '</a></li>';
+				content += '<li class="mui-table-view-cell operation" onclick="' + menu[index].func + '(' + info.id + ',' + info.people + ')"><a href="#">' + menu[index].label + '</a></li>';
 				count ++;
 			}
 		}

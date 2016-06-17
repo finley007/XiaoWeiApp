@@ -90,6 +90,60 @@
 			h5, .h5 {
 			    margin-top: 10px;
 			}
+			
+			#dish-info {
+			     text-align: center;
+			     background-color: #FFFFFF;
+			     width: 92% !important;
+			     margin-left: 4%;
+			     margin-top: 30%;
+			     padding: 0 0 10px 0 !important;
+			     position: absolute;
+			     z-index: 999
+			}
+			
+			#dish-info li {
+				width: 100% !important;
+				margin-right: 0 !important;
+				padding: 10px 14px 0 14px !important
+			}
+			
+			#dish-info img {
+				width: 100%
+			}
+			
+			.menu-backdrop {
+				display: none;
+			}
+			
+			.menu-open {
+				height: 100%;
+				width: 100%;
+			}
+			
+			.menu-open .menu-backdrop {
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				height: 100%;
+				width: 100%;
+				display: block;
+				z-index: 998;
+				background-color: #101010;
+			}
+			
+			.mui-media-body {
+				padding-top: 5px;
+				padding-bottom: 10px;
+				vertical-align: middle;
+				text-align: left;
+				font-weight: bold;
+				height: 50px;
+			}
+			
+			.dish-instruction {
+				text-align: left
+			}
 		</style>
 	</head>
 
@@ -102,9 +156,11 @@
 			<div><input type="submit" value="加菜" id="add-dish"/></div>
 		</nav>
 		<div class="mui-content">
+			<ul class="mui-table-view mui-grid-view hidden" id="dish-info">
+			</ul>
 			<div class="mui-content-padded h5">
-				<div class="item">桌号: 25</div>
-				<div class="item second-col">人数: 3人</div>
+				<div class="item">桌号: <span id="table-no"></span></div>
+				<div class="item second-col">人数: <span id="people-no"></span>人</div>
 			</div>
 			<ul class="mui-table-view" id="dish-list-container">
 				<li class="mui-table-view-cell table-head">
@@ -126,44 +182,29 @@
 				<div class="item second-col">共 <span id="total-count"></span> 道菜</div> 
 			</div>
 		</div>
+		<div id="menu-backdrop" class="menu-backdrop"></div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/app.js"></script>
 		<script src="js/jquery-2.2.3.min.js"></script>
 		<script src="js/dish.js"></script>
+		<script src="js/menu.js"></script>
 		<script>
+			var no;
+			var people;
 			(function($, doc) {
 				$.init();
 				$.plusReady(function() {
-					var settingPage = $.preload({
-						"id": 'setting',
-						"url": 'setting.html'
-					});
+					var self = plus.webview.currentWebview();
+					no = self.no;
+					people = self.people;
+					jQuery("#table-no").text(no);
+					jQuery("#people-no").text(people);
 					
-					var menuPage = $.preload({
-						"id": 'menu',
-						"url": 'menu.html'
-					});
-//					//设置
-//					var settingButton = doc.getElementById('setting');
-//					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
-//					settingButton.addEventListener('tap', function(event) {
-//						$.openWindow({
-//							id: 'setting',
-//							show: {
-//								aniShow: 'pop-in'
-//							},
-//							styles: {
-//								popGesture: 'hide'
-//							},
-//							waiting: {
-//								autoShow: false
-//							}
-//						});
-//					});
 					var addDishButton = doc.getElementById('add-dish');
 					addDishButton.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'menu',
+							url: 'menu.html',
 							show: {
 								aniShow: 'pop-in'
 							},
@@ -171,8 +212,9 @@
 								popGesture: 'hide'
 							},
 							waiting: {
-								autoShow: false
-							}
+								autoShow: true
+							},
+							createNew: true
 						});
 					});
 				});
@@ -185,15 +227,63 @@
 			}
 			$("#total-price").text(result.price);
 			$("#total-count").text(result.count);
+			$('.mui-table-view-cell').click(function() {
+				var info = new Object();
+				info["id"] = $(this).attr("id");
+				info["name"] = extractDishName($(this).find(".mui-slider-handle").first().text());
+				toggleInfo(info);	
+			});
+			
+			var extractDishName = function(name) {
+				name = name || "";
+				name = name.trim();
+				return name.substring(0, name.indexOf(" "));
+			} 
 			
 			//退菜
-			function cancelDish(dish) {
-				alert("退菜" + dish);
+			function cancelDish(dishName) {
+				dish.callCancelDishService();
 			}
 				
 			//催菜
-			function urgeDish(dish) {
-				alert("催菜" + dish);
+			function urgeDish(dishName) {
+				dish.callUrgeDishService();
+			}
+			
+			var backdrop = document.getElementById("menu-backdrop");
+			backdrop.addEventListener('tap', toggleInfo);
+			
+			var dishInfo = document.getElementById("dish-info");
+			var dishInfoClassList = dishInfo.classList;
+			var infoOpenned = false;
+			var busying = false;
+			//弹出菜品信息
+			function toggleInfo(info) {
+				if (busying) {
+					return;
+				}
+				busying = true;
+				if (dishInfoClassList.contains('hidden')) {
+					if (menu.createDishInfo(info)) {
+						mui.ready(function() {
+							mui('.mui-numbox').numbox();
+						})
+						document.body.classList.add('menu-open');
+						backdrop.style.opacity = 0.4;
+						dishInfo.className = 'menu-wrapper';
+						infoOpenned = true;
+					}
+				} else {
+					infoOpenned = false;
+					setTimeout(function() {
+						dishInfo.classList.add('hidden');
+						document.body.classList.remove('menu-open');
+						backdrop.style.opacity = 0;
+					}, 400);
+				}
+				setTimeout(function() {
+					busying = false;
+				}, 400);
 			}
 		</script>
 	</body>

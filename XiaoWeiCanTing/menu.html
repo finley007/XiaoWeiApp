@@ -442,7 +442,7 @@
 				}
 				busying = true;
 				if (dishInfoClassList.contains('hidden')) {
-					if (menu.createDishInfo(info)) {
+					if (menu.createDishInfo(info, true)) {
 						mui.ready(function() {
 							mui('.mui-numbox').numbox();
 						})

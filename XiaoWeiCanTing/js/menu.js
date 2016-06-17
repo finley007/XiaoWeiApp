@@ -243,13 +243,17 @@
 		return content;
 	}
 	
-	owner.createDishInfo = function(info) {
+	owner.createDishInfo = function(info, isOrder) {
 		if (info.id != undefined && info.id != "") {
 			$("#dish-info").children().remove();
-			if (info.num > 0) {
-				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0" style="background-color: rgb(239, 239, 244); border: 1px solid rgb(187, 187, 187); border-radius: 3px;"><button class="mui-btn mui-btn-numbox-minus" type="button" style="display: inline-block;">-</button><input class="mui-input-numbox" type="number" value="' + info.num + '" style="display: inline-block;"><button class="price-bt mui-btn mui-btn-numbox-plus" value="' + info.price + '" type="button" style="border: medium none transparent;">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');
+			if (isOrder) {
+				if (info.num > 0) {
+					$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0" style="background-color: rgb(239, 239, 244); border: 1px solid rgb(187, 187, 187); border-radius: 3px;"><button class="mui-btn mui-btn-numbox-minus" type="button" style="display: inline-block;">-</button><input class="mui-input-numbox" type="number" value="' + info.num + '" style="display: inline-block;"><button class="price-bt mui-btn mui-btn-numbox-plus" value="' + info.price + '" type="button" style="border: medium none transparent;">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');
+				} else {
+					$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input class="mui-input-numbox" type="number" /><button class="price-bt mui-btn mui-btn-numbox-plus" type="button" value="' + info.price + '">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');	
+				}	
 			} else {
-				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div id="' + info.id + '" class="mui-numbox" data-numbox-min="0"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input class="mui-input-numbox" type="number" /><button class="price-bt mui-btn mui-btn-numbox-plus" type="button" value="' + info.price + '">￥' + info.price + '</button></div></div><div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>')	
+				$("#dish-info").append('<li class="mui-media mui-col-xs-6"><img class="mui-media-object" src="./images/xiaocongbandoufu.jpg"><div class="mui-media-body">' + info.name + '<div class="dish-instruction">家常小菜，清淡败火，且不失营养价值。</div></li>');
 			}
 			$(".mui-input-numbox").change(function() {
 				if ($(this).val() == 0) {

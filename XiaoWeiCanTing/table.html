@@ -193,7 +193,11 @@
 					var width = parseInt($("#popover").width());
 					var winWidth = parseInt($(window).width());
 					$(".operation").remove();
-					var menuInfo = table.getMenuContent($(this).attr("status"), $(this).attr("id"));
+					var info = {
+						id: $(this).attr("id"),
+						people: $(this).attr("people")
+					}
+					var menuInfo = table.getMenuContent($(this).attr("status"), info);
 					$(menuInfo.content).insertBefore('#cancel-popover');
 					if (left + width > winWidth) {
 						$(".mui-popover-arrow").css({
@@ -248,7 +252,7 @@
 					closeMenu();
 				}
 				//点菜
-				function orderDish(number) {
+				function orderDish(number, people) {
 					closeMenu();
 					setTimeout(function() {
 						mui.openWindow({
@@ -268,7 +272,7 @@
 					}, 400);
 				}
 				//并台
-				function combineTable(number) {
+				function combineTable(number, people) {
 					closeMenu();
 					var count = table.callTableStatQueryService("ordered");
 					if (count > 0) {
@@ -295,7 +299,7 @@
 					}
 				}
 				//换台
-				function changeTable(number) {
+				function changeTable(number, people) {
 					closeMenu();
 					var count = table.callTableStatQueryService("ordered");
 					if (count > 0) {
@@ -323,12 +327,16 @@
 					
 				}
 				//菜品调整
-				function modifyDish(number) {
+				function modifyDish(number, people) {
 					closeMenu();
 					setTimeout(function() {
 						mui.openWindow({
 							id: 'dish',
 							url: 'dish.html',
+							extras: {
+								no: number,
+								people: people
+							},
 							show: {
 								aniShow: 'pop-in'
 							},
