@@ -55,7 +55,7 @@
 			<h1 class="mui-title">欢迎您，<span id='account'></span></h1>
 		</header>
 		<nav class="mui-bar mui-bar-tab app-footer">
-			<a class="mui-tab-item" href="#tabbar">
+			<a class="mui-tab-item" href="#main">
 				<span class="mui-icon mui-icon-home"></span>
 				<span class="mui-tab-label">首页</span>
 			</a>
@@ -65,83 +65,118 @@
 			</a>
 		</nav>
 		<div class="mui-content">
-			<ul class="mui-table-view mui-table-view-chevron">
-				<li class="mui-table-view-cell mui-media" id="table-view-item">
-					<a class="mui-navigate-right">
-						<div class="main-icon" style="background-position: 0px -30px;"></div>
-						<div class="mui-media-body function-item">
-							<p class="function-title">堂点</p>
-							<p class='mui-ellipsis'>查看全部桌台的状态和信息</p>
+			<div id="main" class="mui-control-content mui-active">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media" id="table-view-item">
+						<a class="mui-navigate-right">
+							<div class="main-icon" style="background-position: 0px -30px;"></div>
+							<div class="mui-media-body function-item">
+								<p class="function-title">堂点</p>
+								<p class='mui-ellipsis'>查看全部桌台的状态和信息</p>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media" id="fast-order-item">
+						<a class='mui-navigate-right' href="javascript:;">
+							<div class="main-icon" style="background-position: -110px -30px;"></div>
+							<div class="mui-media-body function-item">
+								<p class="function-title">快速点餐</p>
+								<p class='mui-ellipsis'>快速点餐，更方便，更快捷</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+				<div id="Gallery" class="mui-slider" style="height: 260px;">
+					<div class="mui-slider-group">
+						<div class="mui-slider-item">
+							<ul class="mui-table-view mui-grid-view mui-grid-9">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-open-item">
+									<a href="#">
+										<span class="mui-icon main-button" style="background-position: -52px -50px;"></span>
+										<div class="mui-media-body">开台</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon main-button" style="background-position: -104px 0px;"><!--span class="mui-badge">5</span--></span>
+										<div class="mui-media-body">拼台</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon main-button" style="background-position: -154px 0px;"></span>
+										<div class="mui-media-body">换台</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon main-button" style="background-position: 0px -104px;"></span>
+										<div class="mui-media-body">催菜</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon main-button"></span>
+										<div class="mui-media-body">退菜</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon main-button" style="background-position: -50px 0px;"></span>
+										<div class="mui-media-body">划菜</div>
+									</a>
+								</li>
+							</ul>
 						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media" id="fast-order-item">
-					<a class='mui-navigate-right' href="javascript:;">
-						<div class="main-icon" style="background-position: -110px -30px;"></div>
-						<div class="mui-media-body function-item">
-							<p class="function-title">快速点餐</p>
-							<p class='mui-ellipsis'>快速点餐，更方便，更快捷</p>
+						<div class="mui-slider-item">
+							<ul class="mui-table-view mui-grid-view mui-grid-9">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+									<a href="#">
+										<span class="mui-icon mui-icon-more"></span>
+										<div class="mui-media-body">更多</div>
+									</a>
+								</li>
+							</ul>
 						</div>
-					</a>
-				</li>
-			</ul>
-			<div id="Gallery" class="mui-slider" style="height: 260px;">
-				<div class="mui-slider-group">
-					<div class="mui-slider-item">
-						<ul class="mui-table-view mui-grid-view mui-grid-9">
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-open-item">
-								<a href="#">
-									<span class="mui-icon main-button" style="background-position: -52px -50px;"></span>
-									<div class="mui-media-body">开台</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon main-button" style="background-position: -104px 0px;"><!--span class="mui-badge">5</span--></span>
-									<div class="mui-media-body">拼台</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon main-button" style="background-position: -154px 0px;"></span>
-									<div class="mui-media-body">换台</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon main-button" style="background-position: 0px -104px;"></span>
-									<div class="mui-media-body">催菜</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon main-button"></span>
-									<div class="mui-media-body">退菜</div>
-								</a>
-							</li>
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon main-button" style="background-position: -50px 0px;"></span>
-									<div class="mui-media-body">划菜</div>
-								</a>
-							</li>
-						</ul>
 					</div>
-					<div class="mui-slider-item">
-						<ul class="mui-table-view mui-grid-view mui-grid-9">
-							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
-								<a href="#">
-									<span class="mui-icon mui-icon-more"></span>
-									<div class="mui-media-body">更多</div>
-								</a>
-							</li>
-						</ul>
+					<div class="mui-slider-indicator">
+						<div class="mui-indicator mui-active"></div>
+						<div class="mui-indicator"></div>
 					</div>
 				</div>
-				<div class="mui-slider-indicator">
-					<div class="mui-indicator mui-active"></div>
-					<div class="mui-indicator"></div>
-				</div>
+			</div>
+			<div id="tabbar-with-map" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							新消息通知
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							隐私
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							通用
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view" style="margin-top: 25px;">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							参数配置
+						</a>
+					</li>
+				</ul>
+				<ul class="mui-table-view" style="margin-top: 25px;">
+					<li class="mui-table-view-cell">
+						<a style="text-align: center;color: #FF3B30;">
+							退出登录
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 		<script src="js/mui.min.js"></script>
@@ -156,16 +191,15 @@
 					var state = app.getState();
 					account.innerText = state.account;
 				}, false);
-				
 				$.plusReady(function() {
-//					var tablePage = $.preload({
-//						"id": 'table',
-//						"url": 'table.html'
-//					});
-//					var orderPage = $.preload({
-//						"id": 'menu',
-//						"url": 'menu.html'
-//					});
+					//					var tablePage = $.preload({
+					//						"id": 'table',
+					//						"url": 'table.html'
+					//					});
+					//					var orderPage = $.preload({
+					//						"id": 'menu',
+					//						"url": 'menu.html'
+					//					});
 					var tableViewItem = doc.getElementById('table-view-item');
 					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
 					tableViewItem.addEventListener('tap', function(event) {
@@ -184,7 +218,6 @@
 							createNew: true
 						});
 					});
-					
 					var fastOrderItem = doc.getElementById('fast-order-item');
 					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
 					fastOrderItem.addEventListener('tap', function(event) {
@@ -203,7 +236,6 @@
 							createNew: true
 						});
 					});
-					
 					var fastOpenItem = doc.getElementById('fast-open-item');
 					fastOpenItem.addEventListener('tap', function(event) {
 						$.openWindow({
@@ -225,7 +257,6 @@
 							createNew: true
 						});
 					});
-					
 					//--
 					$.oldBack = mui.back;
 					var backButtonPress = 0;
