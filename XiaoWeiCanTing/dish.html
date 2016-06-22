@@ -191,12 +191,19 @@
 		<script>
 			var no;
 			var people;
+			var forAction;
+			var callback;
 			(function($, doc) {
 				$.init();
 				$.plusReady(function() {
 					var self = plus.webview.currentWebview();
 					no = self.no;
 					people = self.people;
+					if (self.forAction != null
+						&& typeof self.forAction != 'undefined') {
+						forAction = true;
+					}
+					callback = self.callback;
 					jQuery("#table-no").text(no);
 					jQuery("#people-no").text(people);
 					
@@ -217,22 +224,31 @@
 							createNew: true
 						});
 					});
+					
+					initPage();
 				});
 			}(mui, document));
 			
-			var dishInfo = '{"statInfo": {"totalCount": "3", "totalPrice": "1120.3"}, "detailInfo": [{"name": "超级无敌海景佛跳墙", "price": "1100.00","count": "1"}, {"name": "黄焖鸡", "price": "11.20","count": "1"}, {"name": "猪扒饭", "price": "256.6","count": "1"}]}';
-			var result = dish.creatDishList(dishInfo);
-			if (result.content != "") {
-				$("#dish-list-container").append(result.content);
+			var dishInfoMessage = '{"statInfo": {"totalCount": "3", "totalPrice": "1120.3"}, "detailInfo": [{"name": "超级无敌海景佛跳墙", "price": "1100.00","count": "1"}, {"name": "黄焖鸡", "price": "11.20","count": "1"}, {"name": "猪扒饭", "price": "256.6","count": "1"}]}';
+			
+			function initPage() {
+				var result = dish.creatDishList(dishInfoMessage, forAction);	
+				if (result.content != "") {
+					jQuery("#dish-list-container").append(result.content);
+				}
+				jQuery("#total-price").text(result.price);
+				jQuery("#total-count").text(result.count);
+				if (!forAction) {
+					jQuery('.mui-slider-handle').click(function() {
+						var info = new Object();
+						info["id"] = jQuery(this).parent().attr("id");
+						info["name"] = extractDishName(jQuery(this).text());
+						toggleInfo(info);	
+					});	
+				} else {
+					jQuery('.mui-slider-handle').click(window[callback]);
+				}
 			}
-			$("#total-price").text(result.price);
-			$("#total-count").text(result.count);
-			$('.mui-table-view-cell').click(function() {
-				var info = new Object();
-				info["id"] = $(this).attr("id");
-				info["name"] = extractDishName($(this).find(".mui-slider-handle").first().text());
-				toggleInfo(info);	
-			});
 			
 			var extractDishName = function(name) {
 				name = name || "";

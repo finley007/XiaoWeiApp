@@ -96,31 +96,31 @@
 										<div class="mui-media-body">开台</div>
 									</a>
 								</li>
-								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-combine-item">
 									<a href="#">
 										<span class="mui-icon main-button" style="background-position: -104px 0px;"><!--span class="mui-badge">5</span--></span>
 										<div class="mui-media-body">拼台</div>
 									</a>
 								</li>
-								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-change-item">
 									<a href="#">
 										<span class="mui-icon main-button" style="background-position: -154px 0px;"></span>
 										<div class="mui-media-body">换台</div>
 									</a>
 								</li>
-								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-urge-item">
 									<a href="#">
 										<span class="mui-icon main-button" style="background-position: 0px -104px;"></span>
 										<div class="mui-media-body">催菜</div>
 									</a>
 								</li>
-								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-cancel-item">
 									<a href="#">
 										<span class="mui-icon main-button"></span>
 										<div class="mui-media-body">退菜</div>
 									</a>
 								</li>
-								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+								<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" id="fast-done-item">
 									<a href="#">
 										<span class="mui-icon main-button" style="background-position: -50px 0px;"></span>
 										<div class="mui-media-body">划菜</div>
@@ -200,8 +200,8 @@
 					//						"id": 'menu',
 					//						"url": 'menu.html'
 					//					});
+					//堂点
 					var tableViewItem = doc.getElementById('table-view-item');
-					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
 					tableViewItem.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'table',
@@ -218,8 +218,9 @@
 							createNew: true
 						});
 					});
+					
+					//快速点餐
 					var fastOrderItem = doc.getElementById('fast-order-item');
-					//settingButton.style.display = settings.autoLogin ? 'block' : 'none';
 					fastOrderItem.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'menu',
@@ -236,10 +237,30 @@
 							createNew: true
 						});
 					});
+					
+					//开台
 					var fastOpenItem = doc.getElementById('fast-open-item');
 					fastOpenItem.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'fast-open',
+							url: 'table_select.html',
+							show: {
+								aniShow: 'pop-in'
+							},
+							extras: {
+								status: "idle",
+								title: "开台",
+								callback: "openTable"
+							},
+							createNew: true
+						});
+					});
+					
+					//换台
+					var fastChangeItem = doc.getElementById('fast-change-item');
+					fastChangeItem.addEventListener('tap', function(event) {
+						$.openWindow({
+							id: 'fast-change',
 							url: 'table_select.html',
 							show: {
 								aniShow: 'pop-in'
@@ -251,8 +272,81 @@
 								autoShow: true
 							},
 							extras: {
-								status: "idle",
-								func: "open"
+								status: "opened|ordered",
+								title: "换台",
+								callback: "selectTableForChange"
+							},
+							createNew: true
+						});
+					});
+					
+					//催菜
+					var fastUrgeItem = doc.getElementById('fast-urge-item');
+					fastUrgeItem.addEventListener('tap', function(event) {
+						$.openWindow({
+							id: 'urge',
+							url: 'table_select.html',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: true
+							},
+							extras: {
+								status: "ordered",
+								title: "催菜",
+								callback: "selectTableForUrgeDish"
+							},
+							createNew: true
+						});
+					});
+					
+					//退菜
+					var fastCancelItem = doc.getElementById('fast-cancel-item');
+					fastCancelItem.addEventListener('tap', function(event) {
+						$.openWindow({
+							id: 'cancel',
+							url: 'table_select.html',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: true
+							},
+							extras: {
+								status: "ordered",
+								title: "退菜",
+								callback: "selectTableForCancelDish"
+							},
+							createNew: true
+						});
+					});
+					
+					//划菜
+					var fastDoneItem = doc.getElementById('fast-done-item');
+					fastDoneItem.addEventListener('tap', function(event) {
+						$.openWindow({
+							id: 'fast-change',
+							url: 'table_select.html',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: true
+							},
+							extras: {
+								status: "ordered",
+								title: "划菜",
+								callback: "selectTableForDoneDish"
 							},
 							createNew: true
 						});

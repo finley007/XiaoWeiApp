@@ -95,9 +95,15 @@
 			<script src="js/jquery-2.2.3.min.js"></script> 
 			<script src="js/table.js"></script>
 			<script>
-				var tableInfo = '{"tables": [{"id": "1","status": "idle","number": "1","price": "11.2","area": "1","people": "4"},{"id": "2","status": "idle","number": "2","price": "11.2","area": "1","people": "4"},{"id": "3","status": "ordered","number": "3","price": "11.2","area": "1","people": "4"},{"id": "4","status": "ordered","number": "4","price": "11.2","area": "2","people": "10"},{"id": "5","status": "","number": "5","price": "11.2","area": "3","people": "10"},{"id": "6","status": "","number": "6","price": "11.2","area": "4","people": "10"}]}';
+				var tableInfo = '{"tables": [{"id": "1","status": "idle","number": "1","price": "11.2","area": "1","people": "4"},{"id": "2","status": "idle","number": "2","price": "11.2","area": "1","people": "4"},{"id": "3","status": "ordered","number": "3","price": "11.2","area": "1","people": "4"},{"id": "4","status": "ordered","number": "4","price": "11.2","area": "2","people": "10"},{"id": "5","status": "opened","number": "5","price": "11.2","area": "3","people": "10"},{"id": "6","status": "opened","number": "6","price": "11.2","area": "4","people": "10"}]}';
+				//桌台状态
 				var status;
-				var func;
+				//回调
+				var callback;
+				//标题
+				var title;
+				//原桌号
+				var orgNo;
 				(function($, doc) {
 					$.init();
 					$.plusReady(function() {
@@ -108,31 +114,11 @@
 				function initPage() {
 					var self = plus.webview.currentWebview();
 					status = self.status;
-					func = self.func;
-					//根据func 初始化页面title
-					if (func == "open") {
-						jQuery('.mui-title').text("开台");
-					} else {
-						jQuery('.mui-title').text("选择桌台");
-					}
-					//初始化桌台
-					var listener = getListener();
-					initTable(status, "", listener);
-				}
-				
-				//获取桌台点击监听事件
-				function getListener() {
-					var listener;
-					if (func == "open") {
-						listener = openTable;
-					} else {
-						if (status == "idle") {
-							listener = changeTable;
-						} else if (status == "ordered") {
-							listener = combineTable;
-						}	
-					}
-					return listener;
+					title = self.title;
+					callback = self.callback;
+					orgNo = self.no;
+					jQuery('.mui-title').text(title);
+					initTable(status, "", window[callback]);
 				}
 				
 				function initTable(status, area, func) {
@@ -149,6 +135,7 @@
 					initTable(status, area, listener);
 				});
 				
+				//确定换台
 				function changeTable() {
 					var btn = ["取消", "确定"];
 					  	mui.confirm('确认换到' + $(this).attr("id") +'台？', '提示', btn, function(e){
@@ -159,6 +146,7 @@
 					  });
 				}
 				
+				//确定并台
 				function combineTable() {
 					var btn = ["取消", "确定"];
 					  	mui.confirm('确认和' + $(this).attr("id") +'台合并？', '提示', btn, function(e){
@@ -169,10 +157,80 @@
 					  });
 				}
 				
+				//选择换台
+				function selectTableForChange() {
+					var btn = ["取消", "确定"];
+					  	mui.confirm($(this).attr("id") + '号桌确认换台？', '提示', btn, function(e){
+					    if (e.index == 1) {
+					    	mui.openWindow({
+								id: 'fast-change',
+								url: 'table_select.html',
+								show: {
+									aniShow: 'pop-in'
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								waiting: {
+									autoShow: true
+								},
+								extras: {
+									status: "idle",
+									title: "换台",
+									callback: "changeTable",
+									no: $(this).attr("id")
+								},
+								createNew: true
+							});
+					    }
+					  });
+				}
+				
+				//选择催菜
+				function selectTableForUrgeDish() {
+					var id = $(this).attr("id");
+					var people = $(this).attr("people")
+					selectTableForDish("urgeDish", id, people);
+				}
+				
+				//选择退菜
+				function selectTableForCancelDish() {
+					selectTableForDish("cancelDish", id, people);
+				}
+				
+				//选择划菜
+				function selectTableForDoneDish() {
+					selectTableForDish("", id, people);
+				}
+				
+				function selectTableForDish(action, id, people) {
+					mui.openWindow({
+							id: 'dish',
+							url: 'dish.html',
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: true
+							},
+							extras: {
+								callback: action,
+								no: id,
+								people: people,
+								forAction: "true"
+							},
+							createNew: true
+						});
+				}
+				
 				//开台
 				function openTable() {
 					table.openTablePrompt(callOpenTableService, callOpenTableService);
 				}
+				
 				//调用开台服务
 				function callOpenTableService() {
 					table.callOpenTableService();

@@ -13,16 +13,18 @@
 		];
 	
 	
-	owner.creatDishList = function(info) {
+	owner.creatDishList = function(info, forAction) {
 		info = info || {};
-		var jsonInfo = eval ("(" + info + ")"); 
+		var jsonInfo = eval ("(" + info + ")");
 		var result = {};
 		var content = "";
 		for (var index in jsonInfo.detailInfo) {
 			content += '<li class="mui-table-view-cell" id="' + jsonInfo.detailInfo[index].id + '">' +
 			'<div class="mui-slider-right mui-disabled">';
-				for (var i in dishOper) {
-					content += '<a class="mui-btn ' + dishOper[i].colorStyle + '" onclick="' + dishOper[i].func + '(\'' + jsonInfo.detailInfo[index].name + '\')">' + dishOper[i].label + '</a>';
+				if (!forAction) {
+					for (var i in dishOper) {
+						content += '<a class="mui-btn ' + dishOper[i].colorStyle + '" onclick="' + dishOper[i].func + '(\'' + jsonInfo.detailInfo[index].name + '\')">' + dishOper[i].label + '</a>';
+					}					
 				}
 			content += '</div>' + 
 			'<div class="mui-slider-handle">' + 

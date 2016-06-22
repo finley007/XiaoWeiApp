@@ -3,7 +3,7 @@
 	//桌台区域列表
 	owner.areaInfo = [{"code": "", "label": "全部区域"}, {"code": "1", "label": "大堂"}, {"code": "2", "label": "春"}, {"code": "3", "label": "夏"}, {"code": "4", "label": "秋"}, {"code": "5", "label": "冬"}];
 	//桌台状态列表
-	owner.statusInfo = [{"code": "", "label": "全部状态"}, {"code": "idle", "label": "空闲"}, {"code": "ordered", "label": "已开台"}, {"code": "started", "label": "已下单"}, {"code": "payed", "label": "已支付"}];
+	owner.statusInfo = [{"code": "", "label": "全部状态"}, {"code": "idle", "label": "空闲"}, {"code": "opened", "label": "已开台"}, {"code": "ordered", "label": "已下单"}, {"code": "payed", "label": "已支付"}];
 	
 	owner.status = "";
 	
@@ -15,7 +15,7 @@
 	            "label": "开台"
 	        }
 	    ], 
-	    "ordered": [
+	    "opened": [
 	        {
 	            "func": "clearTable", 
 	            "label": "清台"
@@ -33,7 +33,7 @@
 	            "label": "并台"
 	        }
 	    ],
-	    "started": [
+	    "ordered": [
 	        {
 	            "func": "modifyDish", 
 	            "label": "菜单调整"
@@ -64,12 +64,12 @@
 		info = info || {};
 		for (var index in info.tables) {
 			var table = info.tables[index];
-			var status = table.status != "" ? table.status : "started";
+			var status = table.status;
 			var statusLabel = getStatusLabel(status);
 			result += '<div class="wp-table-btn ng-scope table-state ' + table.status + '" id="' + table.id + '" status="' + status + '" people="' + table.people + '"><div class="table-name-wrapper">' +
 			'<div class="table-name ng-binding">' + table.number + '</div></div><div class="table-detail"><div class="table-state">' + 
 			'<span class="ng-binding">' + statusLabel + '</span><span class="from-wechat ng-hide" ng-show="table.is_from_wechat"></span></div>';
-			if (status == "started") {
+			if (status == "ordered") {
 				result += '<div class="table-info">' + table.price + '￥</div></div></div>';	
 			} else {
 				result += '<div class="table-info">' + table.people + '人</div></div></div>';
@@ -134,9 +134,13 @@
 		if (tableList != null && tableList.length > 0) {
 			for (var index in tableList) {
 				var table = tableList[index];
-				if (("" == status.trim() || table.status == status)
+				var statusList = status.split("|");
+				for (var i in statusList) {
+					var s = statusList[i];
+					if (("" == s.trim() || table.status == s)
 						&& ("" == area.trim() || table.area == area)) {
-					newTableList.push(table);
+						newTableList.push(table);
+					}	
 				}
 			}
 		}
