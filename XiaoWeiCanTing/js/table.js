@@ -90,8 +90,8 @@
 		var jsonInfo = eval ("(" + info + ")"); 
 		parent.append(createTableHTML(jsonInfo));
 		for (var index in jsonInfo.tables) {
-			var id = "#" + jsonInfo.tables[index].id;
-			$(id).on('tap', callback);
+			var id = jsonInfo.tables[index].id;
+			$("#" + id).on('tap', '', {no : id}, callback);
 		}
 	};
 	
@@ -123,7 +123,8 @@
 	}
 	
 	//过滤桌台，目前只支持根据状态和区域过滤
-	owner.filterTable = function(tableInfo, status, area) {
+	owner.filterTable = function(tableInfo, status, area, no) {
+		var no = no || "";
 		if (status.trim() == "" && area.trim() == "") {
 			return tableInfo;
 		}
@@ -137,8 +138,9 @@
 				var statusList = status.split("|");
 				for (var i in statusList) {
 					var s = statusList[i];
-					if (("" == s.trim() || table.status == s)
-						&& ("" == area.trim() || table.area == area)) {
+					if (("" == s.trim() || table.status == s.trim())
+						&& ("" == area.trim() || table.area == area.trim())
+							&& table.id != no) {
 						newTableList.push(table);
 					}	
 				}
@@ -168,14 +170,33 @@
 	}
 	
 	//开台提示
-	owner.openTablePrompt = function(openOrderFunc, openFunc) {
+	owner.openTablePrompt = function(number, openOrderFunc, openFunc) {
 		mui.prompt(' ', '', '开台提示', ['开台点菜', '开台', '取消'], function(e) {
+					var people = $('#select-people-num').val();
 					if (e.index == 0) {
-						openOrderFunc();
+						openOrderFunc(number, people);
 					} else if (e.index == 1) {
-						openFunc();
+						openFunc(number, people);
+		}}, 'div');
+		document.querySelector('.mui-popup-input').innerHTML = '<div style="margin-top: 10px;">请输入就餐人数<div class="mui-numbox" data-numbox-min="1" data-numbox-max="20" style="margin-left: 10px;"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input id="select-people-num" class="mui-input-numbox" type="number" /><button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div>';
+//		mui.prompt('请输入你对MUI的评语：', '性能好', 'Hello MUI', ['开台点菜', '开台', '取消'], function(e) {
+//					if (e.index == 1) {
+//					} else {
+//					}
+//				})
+		mui.ready(function() {
+			mui('.mui-numbox').numbox();
+		})
+	}
+	
+	//开台提示用于快速点餐
+	owner.openTablePromptForFastOrder = function(number, openFunc) {
+		mui.prompt(' ', '', '开台提示', ['开台', '取消'], function(e) {
+					var people = $('#select-people-num').val();
+					if (e.index == 0) {
+						openFunc(number, people);
 					}}, 'div');
-		document.querySelector('.mui-popup-input').innerHTML = '<div style="margin-top: 10px;">请输入就餐人数<div class="mui-numbox" data-numbox-min="1" data-numbox-max="20" style="margin-left: 10px;"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input id="test" class="mui-input-numbox" type="number" /><button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div>';
+		document.querySelector('.mui-popup-input').innerHTML = '<div style="margin-top: 10px;">请输入就餐人数<div class="mui-numbox" data-numbox-min="1" data-numbox-max="20" style="margin-left: 10px;"><button class="mui-btn mui-btn-numbox-minus" type="button">-</button><input id="select-people-num" class="mui-input-numbox" type="number" /><button class="mui-btn mui-btn-numbox-plus" type="button">+</button></div></div>';
 		mui.ready(function() {
 			mui('.mui-numbox').numbox();
 		})

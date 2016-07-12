@@ -20,7 +20,7 @@
 			}
 			
 			#selected-dish-board {
-				height: 300px;
+				height: 260px;
 				overflow-y: auto
 			}
 			
@@ -333,6 +333,9 @@
 				</div>
 			</div>
 			<div id="selected-dish" class="menu-wrapper hidden">
+				<ul style="margin: 0; padding: 0;">
+					<li class="category-title mui-table-view-cell">已选择菜品</li>
+				</ul>
 				<ul class="mui-table-view" id="selected-dish-board">
 				</ul>
 			</div>
@@ -343,9 +346,17 @@
 		<script src="js/mui.min.js"></script>
 		<script src="js/jquery-2.2.3.min.js"></script>
 		<script src="js/menu.js"></script>
+		<script src="js/main.js"></script>
 		<script>
+			var no;
+			var people;
 			mui.init({
 				swipeBack: true //启用右滑关闭功能
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				no = self.no;
+				people = self.people;
 			});
 			var menuList = '{"menu": [{"name": "category1", "label": "凉菜", "dishList": [{"id": "dish1", "label": "粉皮", "price": "10.50"}, {"id": "dish2", "label": "芥末三丝", "price": "5.00"}, {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"} , {"id": "dish3", "label": "小葱拌豆腐", "price": "8.00"}]}, {"name": "category2", "label": "热菜", "dishList": [{"id": "dish4", "label": "红烧肉", "price": "25.00"}, {"id": "dish5", "label": "水煮鱼", "price": "54.00"}, {"id": "dish6", "label": "小炒肉", "price": "24.00"}, {"id": "dish7", "label": "素三鲜", "price": "16.00"}, {"id": "dish8", "label": "土豆丝", "price": "10.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}, {"id": "dish9", "label": "手撕包菜", "price": "6.00"}]}, {"name": "category3", "label": "甜点", "dishList": [{"id": "dish10", "label": "榴莲酥", "price": "20.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}, {"id": "dish11", "label": "提拉米苏", "price": "32.00"}]}]}';
 			menu.createMenu(menuList);
@@ -383,14 +394,53 @@
 						btnArray,
 						function(e) {
 							if (e.index == 1) {
-								//在回调函数里跳转到已点页面
-								menu.callOrderService();
+								orderDishes();
 							} 
 						})
 				} else {
 					mui.alert('请至少选择一个菜品');
 				}
 			});
+			//下单处理
+			function orderDishes() {
+				menu.callOrderService();
+				//快速点餐
+				console.log(main.getCurrentFunc());
+				if (main.getCurrentFunc() == main.main_func().fast_order) {
+					mui.openWindow({
+						id: 'fast-open',
+						url: 'table_select.html',
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+							status: "idle",
+							title: "开台",
+							callback: "openTableForFastOrder"
+						},
+						createNew: true
+					});
+				} else {
+					mui.openWindow({
+							id: 'dish',
+							url: 'dish.html',
+							extras: {
+								no: no,
+								people: people
+							},
+							show: {
+								aniShow: 'pop-in'
+							},
+							styles: {
+								popGesture: 'hide'
+							},
+							waiting: {
+								autoShow: true
+							},
+							createNew: true
+						});
+				}
+			}
 			var selectedDish = document.getElementById("selected-dish");
 			var backdrop = document.getElementById("menu-backdrop");
 			backdrop.addEventListener('tap', backDropControl);

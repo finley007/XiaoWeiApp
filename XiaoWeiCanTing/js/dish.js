@@ -48,4 +48,9 @@
 	owner.callUrgeDishService = function() {
 		alert("调用催菜服务");
 	}
+	
+	//TODO 调用划菜服务
+	owner.callMarkDishService =  function() {
+		alert("调用划菜服务");
+	}
 }(window.dish = {}));

@@ -55,7 +55,7 @@
 			<h1 class="mui-title">欢迎您，<span id='account'></span></h1>
 		</header>
 		<nav class="mui-bar mui-bar-tab app-footer">
-			<a class="mui-tab-item" href="#main">
+			<a class="mui-tab-item mui-active" href="#main">
 				<span class="mui-icon mui-icon-home"></span>
 				<span class="mui-tab-label">首页</span>
 			</a>
@@ -181,6 +181,7 @@
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/app.js"></script>
+		<script src="js/main.js"></script>
 		<script>
 			(function($, doc) {
 				$.init();
@@ -203,6 +204,7 @@
 					//堂点
 					var tableViewItem = doc.getElementById('table-view-item');
 					tableViewItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().table_order);
 						$.openWindow({
 							id: 'table',
 							url: 'table.html',
@@ -217,11 +219,13 @@
 							},
 							createNew: true
 						});
+						main.setCurrentFunc(main.main_func().table_order);
 					});
 					
 					//快速点餐
 					var fastOrderItem = doc.getElementById('fast-order-item');
 					fastOrderItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().fast_order);
 						$.openWindow({
 							id: 'menu',
 							url: 'menu.html',
@@ -241,6 +245,7 @@
 					//开台
 					var fastOpenItem = doc.getElementById('fast-open-item');
 					fastOpenItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().open_table);
 						$.openWindow({
 							id: 'fast-open',
 							url: 'table_select.html',
@@ -259,6 +264,7 @@
 					//换台
 					var fastChangeItem = doc.getElementById('fast-change-item');
 					fastChangeItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().change_table);
 						$.openWindow({
 							id: 'fast-change',
 							url: 'table_select.html',
@@ -283,6 +289,7 @@
 					//催菜
 					var fastUrgeItem = doc.getElementById('fast-urge-item');
 					fastUrgeItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().urge_dish);
 						$.openWindow({
 							id: 'urge',
 							url: 'table_select.html',
@@ -307,6 +314,7 @@
 					//退菜
 					var fastCancelItem = doc.getElementById('fast-cancel-item');
 					fastCancelItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().cancel_dish);
 						$.openWindow({
 							id: 'cancel',
 							url: 'table_select.html',
@@ -331,6 +339,7 @@
 					//划菜
 					var fastDoneItem = doc.getElementById('fast-done-item');
 					fastDoneItem.addEventListener('tap', function(event) {
+						main.setCurrentFunc(main.main_func().mark_dish);
 						$.openWindow({
 							id: 'fast-change',
 							url: 'table_select.html',

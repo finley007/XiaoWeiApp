@@ -235,18 +235,23 @@
 				//开台
 				function openTable(number) {
 					closeMenu();
-					table.openTablePrompt(callOpenTableService, callOpenTableService);
+					table.openTablePrompt(number, openTableAndOrderDish, callOpenTableService);
 				}
 				//调用开台服务
-				function callOpenTableService() {
-					table.callOpenTableService();
+				function callOpenTableService(number, people) {
+					table.callOpenTableService(number, people);
+				}
+				//调用开台服务并开始点菜
+				function openTableAndOrderDish(number, people) {
+					table.callOpenTableService(number, people);
+					orderDish(number, people);
 				}
 				//清台
 				function clearTable(number) {
 					closeMenu();
-					var btnArray = ['是', '否'];
+					var btnArray = ['否', '是'];
 					mui.confirm('确定要清理' + number + '号台?', '', btnArray, function(e) {
-						if (e.index == 0) {
+						if (e.index == 1) {
 							table.callClearTableService();
 						} 
 					})
@@ -258,6 +263,10 @@
 						mui.openWindow({
 							id: 'menu',
 							url: 'menu.html',
+							extras: {
+								no: number,
+								people: people
+							},
 							show: {
 								aniShow: 'pop-in'
 							},
@@ -282,7 +291,9 @@
 								url: 'table_select.html',
 								extras: {
 									status: "ordered|opened",
-									func: "combine"
+									title: "并台",
+									callback: "combineTable",
+									no: number
 								},
 								show: {
 									aniShow: 'pop-in'
@@ -302,7 +313,7 @@
 				//换台
 				function changeTable(number, people) {
 					closeMenu();
-					var count = table.callTableStatQueryService("ordered");
+					var count = table.callTableStatQueryService("idle");
 					if (count > 0) {
 						setTimeout(function() {
 							mui.openWindow({
@@ -310,7 +321,9 @@
 								url: 'table_select.html',
 								extras: {
 									status: "idle",
-									func: "change"
+									title: "换台",
+									callback: "changeTable",
+									no: number
 								},
 								show: {
 									aniShow: 'pop-in'

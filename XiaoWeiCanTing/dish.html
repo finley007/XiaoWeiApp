@@ -160,7 +160,7 @@
 			</ul>
 			<div class="mui-content-padded h5">
 				<div class="item">桌号: <span id="table-no"></span></div>
-				<div class="item second-col">人数: <span id="people-no"></span>人</div>
+				<div class="item second-col">人数: <span id="people-num"></span>人</div>
 			</div>
 			<ul class="mui-table-view" id="dish-list-container">
 				<li class="mui-table-view-cell table-head">
@@ -191,6 +191,7 @@
 		<script>
 			var no;
 			var people;
+			//forAction为true，每一道菜只可以点击，不可以拖动出操作button
 			var forAction;
 			var callback;
 			(function($, doc) {
@@ -205,13 +206,17 @@
 					}
 					callback = self.callback;
 					jQuery("#table-no").text(no);
-					jQuery("#people-no").text(people);
+					jQuery("#people-num").text(people);
 					
 					var addDishButton = doc.getElementById('add-dish');
 					addDishButton.addEventListener('tap', function(event) {
 						$.openWindow({
 							id: 'menu',
 							url: 'menu.html',
+							extras: {
+								no: no,
+								people: people
+							},
 							show: {
 								aniShow: 'pop-in'
 							},
@@ -264,6 +269,11 @@
 			//催菜
 			function urgeDish(dishName) {
 				dish.callUrgeDishService();
+			}
+			
+			//划菜
+			function markDish(dishName) {
+				dish.callMarkDishService();
 			}
 			
 			var backdrop = document.getElementById("menu-backdrop");
